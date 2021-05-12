@@ -19,6 +19,15 @@ int MagnometerRead();
 int main(void)
 {
 
+//-Initialise ADCs---------
+    ADMUX |= (0 << REFS1)|(1 << REFS0);                 //Voltage reference via capacitor on arduino
+    ADCSRA |= (1 << ADEN) | (0 << ADIE);                //ADC enable and ADC conversion complete interrupt disabled
+    ADCSRA |= (1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);   //Prescaler settings (Currently 128)
+    DIDR0 = 0b11111111;                                 //Disable Digital input
+    DIDR2 = 0b11111111;                                 //Disable Digital input
+  //ADCSRA |= (1<<ADSC);                                //Enable Automatic conversion Via ADC_VECT interrupt
+//-------------------------
+
 //-Initialise Sensors------
     /*
     Cny70's
@@ -108,9 +117,9 @@ int UltrasoonRead(int sensor)
 
 
 int MagnometerRead(){
-int Xvalue;
-int Yvalue;
-int Zvalue;
+int Xvalue=0;
+int Yvalue=0;
+int Zvalue=0;
 
     //-Read X value and write to mem
     //----------------------------
@@ -131,4 +140,24 @@ int Zvalue;
     //----------------------------
 
 return Xvalue;
+}
+
+
+int IRDistanceRead(int sensor){
+    int Distance=0;
+// switch case with available pins
+/*
+    ADMUX |= (0 << MUX0)|(0 << MUX1)|(0 << MUX2)|(0 << MUX3)|(0 << MUX4);   //PIN selection
+    ADCSRB |= (0 << MUX5);                                                  //PIN selection
+*/
+
+
+ADCSRA |= (1 << ADSC);
+while ((ADCSRA & (1 << ADSC)) == 1);
+
+// ADC data is right aligned by default and must be read from ADLC first
+Distance = ADCL;        //Read the first data register
+Distance += (ADCH<<8);  //Read the second data register and shift it by 8
+
+return Distance;
 }
