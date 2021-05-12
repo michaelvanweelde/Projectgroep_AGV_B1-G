@@ -26,6 +26,7 @@ int main(void)
     DIDR0 = 0b11111111;                                 //Disable Digital input
     DIDR2 = 0b11111111;                                 //Disable Digital input
   //ADCSRA |= (1<<ADSC);                                //Enable Automatic conversion Via ADC_VECT interrupt
+    ADCSRA |= (1 << ADSC);                              //Run a single conversion in order to prime the circuit
 //-------------------------
 
 //-Initialise Sensors------
