@@ -26,7 +26,7 @@ int main(void)
 {
 
 //-Initialise ADCs---------
-    ADMUX |= (0 << REFS1) |(1 << REFS0);                //Voltage reference via capacitor on arduino
+    ADMUX |= (0 << REFS1) |(1 << REFS0)|(1<<ADLAR);     //Voltage reference via capacitor on arduino
     ADCSRA |= (1 << ADEN) |(0 << ADIE);                 //ADC enable and ADC conversion complete interrupt disabled
     ADCSRA |= (1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);   //Prescaler settings (Currently 128)
     DIDR0 = 0b11111111;                                 //Disable Digital input
@@ -65,8 +65,8 @@ int main(void)
 
 
 //-Initialise Serial-------
-initUSART();
-printString("RDY");
+    initUSART();
+    printString("RDY");
 //-------------------------
 
 
@@ -78,18 +78,22 @@ printString("RDY");
 
 
 //-zero magnometer---------
-north_angle = MagnometerRead();
+    north_angle = MagnometerRead();
 //-------------------------
 
 //-Enable sei--------------
-sei();
+    sei();
 //-------------------------
 
 //-End of setup-----------------------------------------]
     while(1)
     {
-    printByte( IRDistanceRead(0) );
-    transmitByte('\n');
+        printByte( IRDistanceRead(0) );
+        transmitByte(' ');
+        printByte( IRDistanceRead(1) );
+        transmitByte(' ');
+        printByte( IRDistanceRead(2) );
+        transmitByte('\n');
 
 
     }
@@ -124,10 +128,11 @@ int UltrasoonRead(int sensor)
 
 
 
-int MagnometerRead(){
-int Xvalue=0;
-int Yvalue=0;
-int Zvalue=0;
+int MagnometerRead()
+{
+    int Xvalue=0;
+    int Yvalue=0;
+    int Zvalue=0;
 
     //-Read X value and write to mem
     //----------------------------
@@ -147,26 +152,37 @@ int Zvalue=0;
     */
     //----------------------------
 
-return Xvalue;
+    return Xvalue;
 }
 
 
 
-int IRDistanceRead(int sensor){
+int IRDistanceRead(int sensor)
+{
     int Distance=0;
-// switch case with available pins
-/*
-    ADMUX |= (0 << MUX0)|(0 << MUX1)|(0 << MUX2)|(0 << MUX3)|(0 << MUX4);   //PIN selection
-    ADCSRB |= (0 << MUX5);                                                  //PIN selection
-*/
+
+    switch (sensor)
+    {
+    case 0: // Set pin 0 as read pin
+        ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    //PIN selection
+        break;
+
+    case 1:// Set pin 2 as read pin
+        ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  //PIN selection
+        break;
+
+    case 2: // Set pin 4 as read pin
+         ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1)); //PIN selection
+        break;
+    }
 
 
-ADCSRA |= (1 << ADSC);
-while ((ADCSRA & (1 << ADSC)) == 1);
 
-// ADC data is right aligned by default and must be read from ADLC first
-Distance = ADCL;        //Read the first data register
-Distance += (ADCH<<8);  //Read the second data register and shift it by 8
+    ADCSRA |= (1 << ADSC);
+    while ((ADCSRA & (1 << ADSC)) == 1);
 
-return Distance;
+// ADC data is left aligned and can be read from ADCH as an 8 bit value
+    Distance = (ADCH);
+
+    return Distance;
 }
