@@ -26,12 +26,11 @@ int main(void)
 {
 
 //-Initialise ADCs---------
-    ADMUX |= (0 << REFS1)|(1 << REFS0);                 //Voltage reference via capacitor on arduino
-    ADCSRA |= (1 << ADEN) | (0 << ADIE);                //ADC enable and ADC conversion complete interrupt disabled
+    ADMUX |= (0 << REFS1) |(1 << REFS0);                //Voltage reference via capacitor on arduino
+    ADCSRA |= (1 << ADEN) |(0 << ADIE);                 //ADC enable and ADC conversion complete interrupt disabled
     ADCSRA |= (1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);   //Prescaler settings (Currently 128)
     DIDR0 = 0b11111111;                                 //Disable Digital input
     DIDR2 = 0b11111111;                                 //Disable Digital input
-  //ADCSRA |= (1<<ADSC);                                //Enable Automatic conversion Via ADC_VECT interrupt
     ADCSRA |= (1 << ADSC);                              //Run a single conversion in order to prime the circuit
 //-------------------------
 
