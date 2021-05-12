@@ -1,5 +1,7 @@
 Archive member included because of file (symbol)
 
+d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+                              obj\Debug\USART.o (__udivmodqi4)
 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
                               d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o (exit)
 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
@@ -30,6 +32,7 @@ Address of section .data set to 0x800200
 LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
 LOAD obj\Debug\fuse.o
 LOAD obj\Debug\main.o
+LOAD obj\Debug\USART.o
 LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
 LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a
 LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
@@ -124,7 +127,7 @@ LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x3ce
+.text           0x00000000      0x534
  *(.vectors)
  .vectors       0x00000000       0xe4 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
                 0x00000000                __vectors
@@ -238,32 +241,44 @@ LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00000126                __vector_20
                 0x00000126                __vector_42
  .text          0x0000012a        0x0 obj\Debug\fuse.o
- .text          0x0000012a       0x9a obj\Debug\main.o
+ .text          0x0000012a       0xbe obj\Debug\main.o
                 0x00000168                MagnometerRead
-                0x000001a2                IRDistanceRead
+                0x0000016e                IRDistanceRead
                 0x0000012a                UltrasoonRead
-                0x0000016e                main
- .text          0x000001c4        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
- .text          0x000001c4        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
- .text          0x000001c4       0xa8 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
-                0x000001c4                __fixsfsi
- .text          0x0000026c        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
- .text          0x0000026c        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
- .text          0x0000026c       0xf0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
-                0x0000026c                __unpack_f
-                0x0000035c                . = ALIGN (0x2)
+                0x00000190                main
+ .text          0x000001e8      0x12a obj\Debug\USART.o
+                0x000002f2                printHexByte
+                0x000002e6                nibbleToHexCharacter
+                0x000001e8                initUSART
+                0x0000022c                printString
+                0x0000020a                transmitByte
+                0x000002ae                printByte
+                0x0000021c                receiveByte
+                0x00000256                readString
+ .text          0x00000312        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+ .text          0x00000312        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .text          0x00000312        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+ .text          0x00000312       0xa8 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+                0x00000312                __fixsfsi
+ .text          0x000003ba        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
+ .text          0x000003ba        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
+ .text          0x000003ba       0xf0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+                0x000003ba                __unpack_f
+                0x000004aa                . = ALIGN (0x2)
  *(.text.*)
- .text.libgcc   0x0000035c        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
- .text.libgcc   0x0000035c        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
- .text.libgcc   0x0000035c       0x38 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
-                0x0000035c                __prologue_saves__
- .text.libgcc   0x00000394       0x36 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
-                0x00000394                __epilogue_restores__
-                0x000003ca                . = ALIGN (0x2)
+ .text.libgcc   0x000004aa       0x18 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+                0x000004aa                __udivmodqi4
+ .text.libgcc   0x000004c2        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .text.libgcc   0x000004c2        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x000004c2       0x38 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
+                0x000004c2                __prologue_saves__
+ .text.libgcc   0x000004fa       0x36 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
+                0x000004fa                __epilogue_restores__
+                0x00000530                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000003ca        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
-                0x000003ca                exit
-                0x000003ca                _exit
+ .fini9         0x00000530        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+                0x00000530                exit
+                0x00000530                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -282,55 +297,59 @@ LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000003ca        0x4 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .fini0         0x00000530        0x4 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
  *(.fini0)
-                0x000003ce                _etext = .
+                0x00000534                _etext = .
 
-.data           0x00800200        0x0 load address 0x000003ce
+.data           0x00800200        0x4 load address 0x00000534
                 0x00800200                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
  .data          0x00800200        0x0 obj\Debug\fuse.o
- .data          0x00800200        0x0 obj\Debug\main.o
- .data          0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
- .data          0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
- .data          0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
- .data          0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
- .data          0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
- .data          0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .data          0x00800200        0x4 obj\Debug\main.o
+ .data          0x00800204        0x0 obj\Debug\USART.o
+ .data          0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+ .data          0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .data          0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+ .data          0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .data          0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
+ .data          0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
+ .data          0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x00800200                . = ALIGN (0x2)
-                0x00800200                _edata = .
-                0x00800200                PROVIDE (__data_end, .)
+                0x00800204                . = ALIGN (0x2)
+                0x00800204                _edata = .
+                0x00800204                PROVIDE (__data_end, .)
 
-.bss            0x00800200        0x2
-                0x00800200                PROVIDE (__bss_start, .)
+.bss            0x00800204        0x2
+                0x00800204                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00800200        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
- .bss           0x00800200        0x0 obj\Debug\fuse.o
- .bss           0x00800200        0x2 obj\Debug\main.o
-                0x00800200                north_angle
- .bss           0x00800202        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
- .bss           0x00800202        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
- .bss           0x00800202        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
- .bss           0x00800202        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
- .bss           0x00800202        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
- .bss           0x00800202        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .bss           0x00800204        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+ .bss           0x00800204        0x0 obj\Debug\fuse.o
+ .bss           0x00800204        0x2 obj\Debug\main.o
+                0x00800204                north_angle
+ .bss           0x00800206        0x0 obj\Debug\USART.o
+ .bss           0x00800206        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+ .bss           0x00800206        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .bss           0x00800206        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+ .bss           0x00800206        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .bss           0x00800206        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
+ .bss           0x00800206        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
+ .bss           0x00800206        0x0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
  *(.bss*)
  *(COMMON)
-                0x00800202                PROVIDE (__bss_end, .)
-                0x000003ce                __data_load_start = LOADADDR (.data)
-                0x000003ce                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800206                PROVIDE (__bss_end, .)
+                0x00000534                __data_load_start = LOADADDR (.data)
+                0x00000538                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800202        0x0
-                0x00800202                PROVIDE (__noinit_start, .)
+.noinit         0x00800206        0x0
+                0x00800206                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800202                PROVIDE (__noinit_end, .)
-                0x00800202                _end = .
-                0x00800202                PROVIDE (__heap_start, .)
+                0x00800206                PROVIDE (__noinit_end, .)
+                0x00800206                _end = .
+                0x00800206                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -383,71 +402,82 @@ LOAD d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x60
+.debug_aranges  0x00000000       0x80
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 obj\Debug\main.o
  .debug_aranges
-                0x00000020       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+                0x00000020       0x20 obj\Debug\USART.o
  .debug_aranges
-                0x00000040       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+                0x00000040       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_aranges
+                0x00000060       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
 
 .debug_pubnames
-                0x00000000       0xc1
+                0x00000000      0x159
  *(.debug_pubnames)
  .debug_pubnames
                 0x00000000       0x1d obj\Debug\fuse.o
  .debug_pubnames
                 0x0000001d       0x63 obj\Debug\main.o
  .debug_pubnames
-                0x00000080       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+                0x00000080       0x98 obj\Debug\USART.o
  .debug_pubnames
-                0x000000a0       0x21 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+                0x00000118       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_pubnames
+                0x00000138       0x21 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
 
-.debug_info     0x00000000      0x6fc
+.debug_info     0x00000000      0x8dc
  *(.debug_info)
  .debug_info    0x00000000       0xae obj\Debug\fuse.o
  .debug_info    0x000000ae      0x14d obj\Debug\main.o
- .debug_info    0x000001fb      0x2b0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
- .debug_info    0x000004ab      0x251 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .debug_info    0x000001fb      0x1e0 obj\Debug\USART.o
+ .debug_info    0x000003db      0x2b0 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_info    0x0000068b      0x251 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000      0x3fa
+.debug_abbrev   0x00000000      0x4ec
  *(.debug_abbrev)
  .debug_abbrev  0x00000000       0x73 obj\Debug\fuse.o
  .debug_abbrev  0x00000073       0xb4 obj\Debug\main.o
- .debug_abbrev  0x00000127      0x17f d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
- .debug_abbrev  0x000002a6      0x154 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .debug_abbrev  0x00000127       0xf2 obj\Debug\USART.o
+ .debug_abbrev  0x00000219      0x17f d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_abbrev  0x00000398      0x154 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
 
-.debug_line     0x00000000      0x3b4
+.debug_line     0x00000000      0x5ec
  *(.debug_line)
- .debug_line    0x00000000       0x75 obj\Debug\fuse.o
- .debug_line    0x00000075       0xeb obj\Debug\main.o
- .debug_line    0x00000160      0x109 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
- .debug_line    0x00000269      0x14b d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .debug_line    0x00000000       0x8e obj\Debug\fuse.o
+ .debug_line    0x0000008e      0x113 obj\Debug\main.o
+ .debug_line    0x000001a1      0x1f7 obj\Debug\USART.o
+ .debug_line    0x00000398      0x109 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_line    0x000004a1      0x14b d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
 
-.debug_frame    0x00000000       0x90
+.debug_frame    0x00000000      0x120
  *(.debug_frame)
  .debug_frame   0x00000000       0x50 obj\Debug\main.o
- .debug_frame   0x00000050       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
- .debug_frame   0x00000070       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .debug_frame   0x00000050       0x90 obj\Debug\USART.o
+ .debug_frame   0x000000e0       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_frame   0x00000100       0x20 d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
 
-.debug_str      0x00000000      0x26a
+.debug_str      0x00000000      0x2e3
  *(.debug_str)
- .debug_str     0x00000000       0x8e obj\Debug\fuse.o
-                                 0xc2 (size before relaxing)
- .debug_str     0x0000008e       0xa2 obj\Debug\main.o
+ .debug_str     0x00000000       0x8a obj\Debug\fuse.o
+                                 0xbe (size before relaxing)
+ .debug_str     0x0000008a       0x7c obj\Debug\main.o
                                 0x115 (size before relaxing)
- .debug_str     0x00000130      0x12f d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_str     0x00000106       0xa3 obj\Debug\USART.o
+                                0x141 (size before relaxing)
+ .debug_str     0x000001a9      0x12f d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
                                 0x19e (size before relaxing)
- .debug_str     0x0000025f        0xb d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .debug_str     0x000002d8        0xb d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
                                 0x17f (size before relaxing)
 
-.debug_loc      0x00000000      0x15a
+.debug_loc      0x00000000      0x2c9
  *(.debug_loc)
  .debug_loc     0x00000000       0x30 obj\Debug\main.o
- .debug_loc     0x00000030       0x7e d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
- .debug_loc     0x000000ae       0xac d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
+ .debug_loc     0x00000030      0x16f obj\Debug\USART.o
+ .debug_loc     0x0000019f       0x7e d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
+ .debug_loc     0x0000021d       0xac d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -469,6 +499,7 @@ __data_start                                      d:/programs/codeblocks/winavr/
 __do_clear_bss                                    d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
                                                   obj\Debug\main.o
 __do_copy_data                                    d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+                                                  obj\Debug\main.o
 __epilogue_restores__                             d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_epilogue.o)
                                                   d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
 __fixsfsi                                         d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
@@ -479,6 +510,8 @@ __init                                            d:/programs/codeblocks/winavr/
 __prologue_saves__                                d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_prologue.o)
                                                   d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
 __stack                                           d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+__udivmodqi4                                      d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+                                                  obj\Debug\USART.o
 __unpack_f                                        d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_unpack_sf.o)
                                                   d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_sf_to_si.o)
 __vector_1                                        d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
@@ -542,6 +575,18 @@ __vectors                                         d:/programs/codeblocks/winavr/
 _exit                                             d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
 exit                                              d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
                                                   d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+initUSART                                         obj\Debug\USART.o
+                                                  obj\Debug\main.o
 main                                              obj\Debug\main.o
                                                   d:/programs/codeblocks/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+nibbleToHexCharacter                              obj\Debug\USART.o
 north_angle                                       obj\Debug\main.o
+printByte                                         obj\Debug\USART.o
+                                                  obj\Debug\main.o
+printHexByte                                      obj\Debug\USART.o
+printString                                       obj\Debug\USART.o
+                                                  obj\Debug\main.o
+readString                                        obj\Debug\USART.o
+receiveByte                                       obj\Debug\USART.o
+transmitByte                                      obj\Debug\USART.o
+                                                  obj\Debug\main.o

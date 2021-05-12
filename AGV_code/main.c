@@ -3,6 +3,9 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "USART.h"
+
+
 
 //Defines with standard setups
 /*-------------------------------- example
@@ -12,9 +15,12 @@
 #define motorX_BRK PORTA &= ~(1<<PA0 | 1<<PA1)              // Stop the X dir motor
 ----------------------------------*/
 
+
 int north_angle = 0;
 int UltrasoonRead(int sensor);
 int MagnometerRead();
+int IRDistanceRead(int sensor);
+
 
 int main(void)
 {
@@ -60,10 +66,8 @@ int main(void)
 
 
 //-Initialise Serial-------
-    /*
-    setup serial data line
-    send serial RDY over line
-    */
+initUSART();
+printString("RDY");
 //-------------------------
 
 
@@ -78,19 +82,22 @@ int main(void)
 north_angle = MagnometerRead();
 //-------------------------
 
-
-    sei();
+//-Enable sei--------------
+sei();
+//-------------------------
 
 //-End of setup-----------------------------------------]
     while(1)
     {
-
-
+    printByte( IRDistanceRead(0) );
+    transmitByte('\n');
 
 
     }
     return 0;
 }
+
+
 
 int UltrasoonRead(int sensor)
 {
@@ -115,6 +122,7 @@ int UltrasoonRead(int sensor)
 
     return echo;
 }
+
 
 
 int MagnometerRead(){
@@ -142,6 +150,7 @@ int Zvalue=0;
 
 return Xvalue;
 }
+
 
 
 int IRDistanceRead(int sensor){
