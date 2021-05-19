@@ -2,7 +2,7 @@
 1620735268 source:d:\desktop\projectgroep_agv_b1-g\agv_code\fuse.c
 	<avr/io.h>
 
-1620804458 source:d:\git\projectgroep_agv_b1-g\agv_code\fuse.c
+1621423287 source:d:\git\projectgroep_agv_b1-g\agv_code\fuse.c
 	<avr/io.h>
 
 1620818910 source:d:\git\projectgroep_agv_b1-g\agv_code\avr-uart-master\uart.c
@@ -21,12 +21,12 @@
 	<avr/interrupt.h>
 	"USART.h"
 
-1620826672 source:d:\git\projectgroep_agv_b1-g\agv_code\usart.c
+1621423287 source:d:\git\projectgroep_agv_b1-g\agv_code\usart.c
 	<avr/io.h>
 	"USART.h"
 	<util/setbaud.h>
 
-1620826672 d:\git\projectgroep_agv_b1-g\agv_code\usart.h
+1621423287 d:\git\projectgroep_agv_b1-g\agv_code\usart.h
 
 1621338525 source:d:\desktop\projectgroep_agv_b1-g\agv_code\usart.c
 	<avr/io.h>
@@ -63,6 +63,14 @@
 	"I2C_Master_H_file.h"
 
 1621346682 d:\desktop\projectgroep_agv_b1-g\agv_code\i2c_master_h_file.h
+	<avr/io.h>
+	<util/delay.h>
+	<math.h>
+
+1621423530 source:d:\git\projectgroep_agv_b1-g\agv_code\i2c_master_c_file.c
+	"I2C_Master_H_file.h"
+
+1621423530 d:\git\projectgroep_agv_b1-g\agv_code\i2c_master_h_file.h
 	<avr/io.h>
 	<util/delay.h>
 	<math.h>
