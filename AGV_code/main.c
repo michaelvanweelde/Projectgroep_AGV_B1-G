@@ -4,7 +4,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "USART.h"
+#include "I2C_Master_H_file.h"	/* Include I2C header file */
 
+#define clock_sla       0x11
+#define clock_seconds   0x0F
+#define Mag_adress      0x1E
+#define Mag_read        0x3C
+#define Mag_write       0x3D
+#define Mag_x           0x03
 
 
 //Defines with standard setups
@@ -58,9 +65,7 @@ int main(void)
 
 
 //-Initialise I2C interface
-    /*
-    Setup I2C interface with TWI builtin
-    */
+
 //-------------------------
 
 
@@ -78,52 +83,41 @@ int main(void)
 
 
 //-zero magnometer---------
+    I2C_Init();
+	I2C_Start(0x3C);	/* Start and write SLA+W */
+	I2C_Write(0x00);	/* Write memory location address */
+	I2C_Write(0x70);	/* Configure register A as 8-average, 15 Hz default, normal measurement */
+	I2C_Write(0xA0);	/* Configure register B for gain */
+	I2C_Write(0x00);	/* Configure continuous measurement mode in mode register */
+	I2C_Stop();		/* Stop I2C */
     north_angle = MagnometerRead();
+    printString(" working");
 //-------------------------
 
 //-Enable sei--------------
     sei();
 //-------------------------
-
+    printString(" working");
 //-End of setup-----------------------------------------]
     while(1)
     {
-        printByte( IRDistanceRead(0) );
-        transmitByte(' ');
-        printByte( IRDistanceRead(1) );
-        transmitByte(' ');
-        printByte( IRDistanceRead(2) );
+
+    //uint8_t x, y, z;
+    //I2C_Start(0x3C);	/* Start and wait for acknowledgment */
+    //I2C_Write(0x03);	/* Write memory location address */
+    //I2C_Repeated_Start(0x3D);/* Generate repeat start condition with SLA+R */
+	//x = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
+	//z = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
+	//y = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Nack());
+    //I2C_Stop();		/* Stop I2C */
+
+        printByte(x);
+        printString("working");
         transmitByte('\n');
 
 
     }
     return 0;
-}
-
-
-
-int UltrasoonRead(int sensor)
-{
-
-    //-initialize variables-------
-    volatile float echo=0.0;
-    int timeout=0;
-    //----------------------------
-
-
-    //-Pulse the Trig pin---------
-    //----------------------------
-
-
-    //-Wait until echo turns high-
-    //----------------------------
-
-
-    //-then measure pulse width---
-    //----------------------------
-
-
-    return echo;
 }
 
 
