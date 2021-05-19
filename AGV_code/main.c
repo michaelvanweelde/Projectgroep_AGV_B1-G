@@ -59,9 +59,9 @@
 
 
 int north_angle = 0;
-int UltrasoonRead(int sensor);
 int MagnometerRead();
 int IRDistanceRead(int sensor);
+int ColorSensorRead(int sensor);
 
 
 int main(void)
@@ -212,4 +212,50 @@ int IRDistanceRead(int sensor)
     Distance = (ADCH);
 
     return Distance;
+}
+
+
+
+int ColorSensorRead(int sensor)
+{
+    // initialize variables------------------------------------
+    volatile long width=0;
+    int X;
+    //---------------------------------------------------------
+
+
+    for(X=1; X<11; X++){
+        //Create a timeout variable for error detection--------
+        volatile int timeout=0;
+        //-----------------------------------------------------
+
+
+        // Wait until pin turns high then measure pulse width--
+        while(!(TCS3200G_L) && (sensor == 0) && timeout++<1000);
+        while(TCS3200G_L)width++;
+
+        while(!(TCS3200G_R) && (sensor == 1) && timeout++<1000);
+        while(TCS3200G_R)width++;
+        //-----------------------------------------------------
+
+
+        // Display error code with data and return 0 for error-
+        if(timeout==1000){
+            printString("warning TCS ");
+            printByte(sensor);
+            printString(" out of boundaries after: ");
+            printByte(X);
+            printString(" runs");
+            printByte('\n');
+            return 0;
+        }
+        //-----------------------------------------------------
+    }
+
+    //Take the average value of the measurement rounding down--
+    width = width / X;
+    //---------------------------------------------------------
+
+
+    return width; // Return value
 }
