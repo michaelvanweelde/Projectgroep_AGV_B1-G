@@ -57,8 +57,8 @@
 #define Button          (PINL & (1<<PL3))  // Read main control button on pin(D46)
 
 
-#define TCS_Tout 2000 //what we consider an overdue measurement in clock cycles
-#define ADC_Tout 1000 //what we consider an overdue measurement in clock cycles
+#define TCS_Tout 2000 // what we consider an overdue measurement in clock cycles
+#define ADC_Tout 2000 // what we consider an overdue measurement in clock cycles
 
 
 int north_angle = 0;
@@ -70,56 +70,34 @@ int ColorSensorRead(int sensor);
 int main(void)
 {
 
-//-Initialise ADCs---------
-    ADMUX |= (0 << REFS1) |(1 << REFS0)|(1<<ADLAR);     //Voltage reference via capacitor on arduino
-    ADCSRA |= (1 << ADEN) |(0 << ADIE);                 //ADC enable and ADC conversion complete interrupt disabled
-    ADCSRA |= (1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);   //Prescaler settings (Currently 128)
-    DIDR0 = 0b11111111;                                 //Disable Digital input
-    DIDR2 = 0b11111111;                                 //Disable Digital input
-    ADCSRA |= (1 << ADSC);                              //Run a single conversion in order to prime the circuit
+//-Initialize ADCs---------
+    ADMUX |= (0 << REFS1) |(1 << REFS0)|(1<<ADLAR);     // Voltage reference via capacitor on arduino
+    ADCSRA |= (1 << ADEN) |(0 << ADIE);                 // ADC enable and ADC conversion complete interrupt disabled
+    ADCSRA |= (1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);   // Prescaler settings (Currently 128)
+    DIDR0 = 0b11111111;                                 // Disable Digital input
+    DIDR2 = 0b11111111;                                 // Disable Digital input
+    ADCSRA |= (1 << ADSC);                              // Run a single conversion in order to prime the circuit
 //-------------------------
 
-//-Initialise Sensors------
-    /*
-    Cny70's
-    setup pins
-
-    ultrasoon
-    setup pins
-
-    TCS32000's
-    setup pins
-    set prescaler
-    */
-//-------------------------
-
-
-//-Initialise motors-------
-    /*
-    setup pins
-    setup PWM signals
-    */
-//-------------------------
-
-
-//-Initialise I2C interface
+//-Initialize pins---------
+    TCS3200_INIT;
+    LED_INIT;
 
 //-------------------------
 
 
-//-Initialise Serial-------
+//-Initialize motors-------
+    MotorL_INIT;
+    MotorR_INIT;
+//-------------------------
+
+
+//-Initialize Serial-------
     initUSART();
 //-------------------------
 
 
-//-Setup timer for delays--
-    /*
-    Setup timer with a +- 1ms overflow time
-    */
-//-------------------------
-
-
-//-zero magnometer---------
+//-Initialize I2C interface
     I2C_Init();
     I2C_Start(0x3C);	/* Start and write SLA+W */
     I2C_Write(0x00);	/* Write memory location address */
@@ -127,10 +105,15 @@ int main(void)
     I2C_Write(0xA0);	/* Configure register B for gain */
     I2C_Write(0x00);	/* Configure continuous measurement mode in mode register */
     I2C_Stop();		    /* Stop I2C */
+//-------------------------
+
+
+//-zero magnometer---------
     north_angle = MagnometerRead();
 //-------------------------
 
-//-Enable sei--------------
+
+//-Enable interrupts-------
     sei();
 //-------------------------
 //-End of setup-----------------------------------------]
@@ -155,6 +138,7 @@ int main(void)
     }
     return 0;
 }
+
 
 
 
@@ -189,7 +173,7 @@ int MagnometerRead()
 
 int IRDistanceRead(int sensor)
 {
-    // initialize variables------------------------------------
+    // Initialize variables------------------------------------
     int distance=0;
     volatile int timeout=0;
     int X;
@@ -200,15 +184,15 @@ int IRDistanceRead(int sensor)
     switch (sensor)
     {
     case 0:                                                     // Set pin 0 as read pin
-        ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    //PIN selection
+        ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    // PIN selection
         break;
 
     case 1:                                                     // Set pin 2 as read pin
-        ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  //PIN selection
+        ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  // PIN selection
         break;
 
     case 2:                                                     // Set pin 4 as read pin
-        ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1));  //PIN selection
+        ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1));  // PIN selection
         break;
     }
     //---------------------------------------------------------
@@ -226,15 +210,15 @@ int IRDistanceRead(int sensor)
 
 
     // If a timeout occurs attempt to retry the measurement----
-    if( timeout == ADC_Tout/2 )     // Catch a timeout scenario and retry returning 0 on failure
-    {                               // Display error code with data and return 0 on retry failure
+    if( timeout == ADC_Tout/2 )
+    {
         printString("warning ADC out of boundaries retrying");
         printByte('\n');
         distance=0;
         for(X=1; X<5; X++)
         {
             ADCSRA |= (1 << ADSC);                                          // Start the conversion
-            while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );   // Wait until conversion is finished
+            while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );  // Wait until conversion is finished
             distance += (ADCH);                                             // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
         }
         if( timeout == ADC_Tout){                                           // if retry has failed return 0
@@ -255,9 +239,10 @@ int IRDistanceRead(int sensor)
 
 
 
+
 int ColorSensorRead(int sensor)
 {
-    // initialize variables------------------------------------
+    // Initialize variables------------------------------------
     volatile int width=0;
     int X;
     //---------------------------------------------------------
