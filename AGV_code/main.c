@@ -57,6 +57,8 @@
 #define Button          (PINL & (1<<PL3))  // Read main control button on pin(D46)
 
 
+#define TCS_Tout 2000 //what we consider an overdue measurement in clock cycles
+
 
 int north_angle = 0;
 int MagnometerRead();
@@ -106,7 +108,6 @@ int main(void)
 
 //-Initialise Serial-------
     initUSART();
-    printString("RDY");
 //-------------------------
 
 
@@ -119,32 +120,33 @@ int main(void)
 
 //-zero magnometer---------
     I2C_Init();
-	I2C_Start(0x3C);	/* Start and write SLA+W */
-	I2C_Write(0x00);	/* Write memory location address */
-	I2C_Write(0x70);	/* Configure register A as 8-average, 15 Hz default, normal measurement */
-	I2C_Write(0xA0);	/* Configure register B for gain */
-	I2C_Write(0x00);	/* Configure continuous measurement mode in mode register */
-	I2C_Stop();		    /* Stop I2C */
+    I2C_Start(0x3C);	/* Start and write SLA+W */
+    I2C_Write(0x00);	/* Write memory location address */
+    I2C_Write(0x70);	/* Configure register A as 8-average, 15 Hz default, normal measurement */
+    I2C_Write(0xA0);	/* Configure register B for gain */
+    I2C_Write(0x00);	/* Configure continuous measurement mode in mode register */
+    I2C_Stop();		    /* Stop I2C */
     north_angle = MagnometerRead();
-    printString(" working");
 //-------------------------
 
 //-Enable sei--------------
     sei();
 //-------------------------
-    printString(" working");
 //-End of setup-----------------------------------------]
+    printString("RDY");
+    printByte('\n');
+
     while(1)
     {
 
-    //uint8_t x, y, z;
-    //I2C_Start(0x3C);	/* Start and wait for acknowledgment */
-    //I2C_Write(0x03);	/* Write memory location address */
-    //I2C_Repeated_Start(0x3D);/* Generate repeat start condition with SLA+R */
-	//x = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
-	//z = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
-	//y = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Nack());
-    //I2C_Stop();		/* Stop I2C */
+        //uint8_t x, y, z;
+        //I2C_Start(0x3C);	/* Start and wait for acknowledgment */
+        //I2C_Write(0x03);	/* Write memory location address */
+        //I2C_Repeated_Start(0x3D);/* Generate repeat start condition with SLA+R */
+        //x = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
+        //z = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
+        //y = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Nack());
+        //I2C_Stop();		/* Stop I2C */
 
 
 
@@ -199,7 +201,7 @@ int IRDistanceRead(int sensor)
         break;
 
     case 2: // Set pin 4 as read pin
-         ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1)); //PIN selection
+        ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1)); //PIN selection
         break;
     }
 
@@ -211,6 +213,7 @@ int IRDistanceRead(int sensor)
     // ADC data is left aligned and can be read from ADCH as an 8 bit value
     Distance = (ADCH);
 
+
     return Distance;
 }
 
@@ -219,28 +222,32 @@ int IRDistanceRead(int sensor)
 int ColorSensorRead(int sensor)
 {
     // initialize variables------------------------------------
-    volatile long width=0;
+    volatile int width=0;
     int X;
     //---------------------------------------------------------
 
 
-    for(X=1; X<11; X++){
+    for(X=1; X<11; X++)
+    {
         //Create a timeout variable for error detection--------
         volatile int timeout=0;
         //-----------------------------------------------------
 
 
         // Wait until pin turns high then measure pulse width--
-        while(!(TCS3200G_L) && (sensor == 0) && timeout++<1000);
-        while(TCS3200G_L)width++;
+        while( (TCS3200G_L) && (sensor == 0) && (timeout++<TCS_Tout) );         // Wait for pin to turn low to prevent possible error
+        while(!(TCS3200G_L) && (sensor == 0) && (timeout++<TCS_Tout) );         // wait out the Low period
+        while( (TCS3200G_L) && (sensor == 0) && (timeout++<TCS_Tout) )width++;  // Measure the pulse width
 
-        while(!(TCS3200G_R) && (sensor == 1) && timeout++<1000);
-        while(TCS3200G_R)width++;
+        while( (TCS3200G_R) && (sensor == 1) && (timeout++<TCS_Tout) );         // Wait for pin to turn low to prevent possible error
+        while(!(TCS3200G_R) && (sensor == 1) && (timeout++<TCS_Tout) );         // wait out the Low period
+        while( (TCS3200G_R) && (sensor == 1) && (timeout++<TCS_Tout) )width++;  // Measure the pulse width
         //-----------------------------------------------------
 
 
-        // Display error code with data and return 0 for error-
-        if(timeout==1000){
+        if( timeout == TCS_Tout )   // Catch a timeout scenario and end the function early returning a 0 to the program
+        {
+            // Display error code with data and return 0 for error-
             printString("warning TCS ");
             printByte(sensor);
             printString(" out of boundaries after: ");
@@ -252,7 +259,7 @@ int ColorSensorRead(int sensor)
         //-----------------------------------------------------
     }
 
-    //Take the average value of the measurement rounding down--
+    //Take the average value of the measurements rounding down--
     width = width / X;
     //---------------------------------------------------------
 
