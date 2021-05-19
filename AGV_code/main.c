@@ -58,6 +58,7 @@
 
 
 #define TCS_Tout 2000 //what we consider an overdue measurement in clock cycles
+#define ADC_Tout 1000 //what we consider an overdue measurement in clock cycles
 
 
 int north_angle = 0;
@@ -188,33 +189,68 @@ int MagnometerRead()
 
 int IRDistanceRead(int sensor)
 {
-    int Distance=0;
+    // initialize variables------------------------------------
+    int distance=0;
+    volatile int timeout=0;
+    int X;
+    //---------------------------------------------------------
 
+
+    // Switch the ADC to the correct pin-----------------------
     switch (sensor)
     {
-    case 0: // Set pin 0 as read pin
+    case 0:                                                     // Set pin 0 as read pin
         ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    //PIN selection
         break;
 
-    case 1:// Set pin 2 as read pin
+    case 1:                                                     // Set pin 2 as read pin
         ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  //PIN selection
         break;
 
-    case 2: // Set pin 4 as read pin
-        ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1)); //PIN selection
+    case 2:                                                     // Set pin 4 as read pin
+        ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1));  //PIN selection
         break;
     }
+    //---------------------------------------------------------
 
 
+    // Take measurements with the ADC and collect the average--
+    for(X=1; X<5; X++)
+    {
 
-    ADCSRA |= (1 << ADSC);
-    while ((ADCSRA & (1 << ADSC)) == 1);
+        ADCSRA |= (1 << ADSC);                                              // Start the conversion
+        while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
+        distance += (ADCH);                                                 // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+    }                                                                       // Because ADC value is an 8 bit value overflow is impossible
+    //---------------------------------------------------------
 
-    // ADC data is left aligned and can be read from ADCH as an 8 bit value
-    Distance = (ADCH);
+
+    // If a timeout occurs attempt to retry the measurement----
+    if( timeout == ADC_Tout/2 )     // Catch a timeout scenario and retry returning 0 on failure
+    {                               // Display error code with data and return 0 on retry failure
+        printString("warning ADC out of boundaries retrying");
+        printByte('\n');
+        distance=0;
+        for(X=1; X<5; X++)
+        {
+            ADCSRA |= (1 << ADSC);                                          // Start the conversion
+            while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );   // Wait until conversion is finished
+            distance += (ADCH);                                             // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+        }
+        if( timeout == ADC_Tout){                                           // if retry has failed return 0
+            printString("Retry failed");
+            printByte('\n');
+            return 0;
+        }
+    }
+    //---------------------------------------------------------
 
 
-    return Distance;
+    //Take the average value of the measurements rounding down-
+    distance = distance / X;
+    //---------------------------------------------------------
+
+    return distance;
 }
 
 
@@ -227,7 +263,7 @@ int ColorSensorRead(int sensor)
     //---------------------------------------------------------
 
 
-    for(X=1; X<11; X++)
+    for(X=1; X<10; X++)
     {
         //Create a timeout variable for error detection--------
         volatile int timeout=0;
@@ -246,8 +282,7 @@ int ColorSensorRead(int sensor)
 
 
         if( timeout == TCS_Tout )   // Catch a timeout scenario and end the function early returning a 0 to the program
-        {
-            // Display error code with data and return 0 for error-
+        {                           // Display error code with data and return 0 for error-
             printString("warning TCS ");
             printByte(sensor);
             printString(" out of boundaries after: ");

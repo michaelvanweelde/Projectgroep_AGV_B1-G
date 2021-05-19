@@ -3,29 +3,29 @@ bin\Debug\AGV_code.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000003c  00800200  00000716  000007ca  2**0
+  0 .data         00000066  00800200  00000774  00000828  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000716  00000000  00000000  000000b4  2**1
+  1 .text         00000774  00000000  00000000  000000b4  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000002  0080023c  0080023c  00000806  2**0
+  2 .bss          00000002  00800266  00800266  0000088e  2**0
                   ALLOC
-  3 .fuse         00000003  00820000  00820000  00000806  2**0
+  3 .fuse         00000003  00820000  00820000  0000088e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  4 .debug_aranges 00000060  00000000  00000000  00000809  2**0
+  4 .debug_aranges 00000060  00000000  00000000  00000891  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_pubnames 000001af  00000000  00000000  00000869  2**0
+  5 .debug_pubnames 000001af  00000000  00000000  000008f1  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000059d  00000000  00000000  00000a18  2**0
+  6 .debug_info   000005b8  00000000  00000000  00000aa0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000002eb  00000000  00000000  00000fb5  2**0
+  7 .debug_abbrev 0000033e  00000000  00000000  00001058  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000006fa  00000000  00000000  000012a0  2**0
+  8 .debug_line   000007df  00000000  00000000  00001396  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000170  00000000  00000000  0000199c  2**2
+  9 .debug_frame  00000170  00000000  00000000  00001b78  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000275  00000000  00000000  00001b0c  2**0
+ 10 .debug_str    00000275  00000000  00000000  00001ce8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000046d  00000000  00000000  00001d81  2**0
+ 11 .debug_loc    000004a3  00000000  00000000  00001f5d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -103,20 +103,20 @@ Disassembly of section .text:
   f4:	12 e0       	ldi	r17, 0x02	; 2
   f6:	a0 e0       	ldi	r26, 0x00	; 0
   f8:	b2 e0       	ldi	r27, 0x02	; 2
-  fa:	e6 e1       	ldi	r30, 0x16	; 22
+  fa:	e4 e7       	ldi	r30, 0x74	; 116
   fc:	f7 e0       	ldi	r31, 0x07	; 7
   fe:	00 e0       	ldi	r16, 0x00	; 0
  100:	0b bf       	out	0x3b, r16	; 59
  102:	02 c0       	rjmp	.+4      	; 0x108 <__do_copy_data+0x14>
  104:	07 90       	elpm	r0, Z+
  106:	0d 92       	st	X+, r0
- 108:	ac 33       	cpi	r26, 0x3C	; 60
+ 108:	a6 36       	cpi	r26, 0x66	; 102
  10a:	b1 07       	cpc	r27, r17
  10c:	d9 f7       	brne	.-10     	; 0x104 <__do_copy_data+0x10>
 
 0000010e <__do_clear_bss>:
  10e:	12 e0       	ldi	r17, 0x02	; 2
- 110:	ac e3       	ldi	r26, 0x3C	; 60
+ 110:	a6 e6       	ldi	r26, 0x66	; 102
  112:	b2 e0       	ldi	r27, 0x02	; 2
  114:	01 c0       	rjmp	.+2      	; 0x118 <.do_clear_bss_start>
 
@@ -124,11 +124,11 @@ Disassembly of section .text:
  116:	1d 92       	st	X+, r1
 
 00000118 <.do_clear_bss_start>:
- 118:	ae 33       	cpi	r26, 0x3E	; 62
+ 118:	a8 36       	cpi	r26, 0x68	; 104
  11a:	b1 07       	cpc	r27, r17
  11c:	e1 f7       	brne	.-8      	; 0x116 <.do_clear_bss_loop>
- 11e:	0e 94 6d 02 	call	0x4da	; 0x4da <main>
- 122:	0c 94 89 03 	jmp	0x712	; 0x712 <_exit>
+ 11e:	0e 94 b7 02 	call	0x56e	; 0x56e <main>
+ 122:	0c 94 b8 03 	jmp	0x770	; 0x770 <_exit>
 
 00000126 <__bad_interrupt>:
  126:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -337,794 +337,925 @@ Disassembly of section .text:
  2b8:	90 e0       	ldi	r25, 0x00	; 0
  2ba:	08 95       	ret
 
-000002bc <IRDistanceRead>:
-
-int IRDistanceRead(int sensor)
-{
-    int Distance=0;
-
-    switch (sensor)
- 2bc:	81 30       	cpi	r24, 0x01	; 1
- 2be:	91 05       	cpc	r25, r1
- 2c0:	59 f0       	breq	.+22     	; 0x2d8 <IRDistanceRead+0x1c>
- 2c2:	82 30       	cpi	r24, 0x02	; 2
- 2c4:	91 05       	cpc	r25, r1
- 2c6:	79 f0       	breq	.+30     	; 0x2e6 <IRDistanceRead+0x2a>
- 2c8:	89 2b       	or	r24, r25
- 2ca:	99 f4       	brne	.+38     	; 0x2f2 <IRDistanceRead+0x36>
-    {
-    case 0: // Set pin 0 as read pin
-        ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    //PIN selection
- 2cc:	ec e7       	ldi	r30, 0x7C	; 124
- 2ce:	f0 e0       	ldi	r31, 0x00	; 0
- 2d0:	80 81       	ld	r24, Z
- 2d2:	88 7f       	andi	r24, 0xF8	; 248
- 2d4:	80 83       	st	Z, r24
- 2d6:	0d c0       	rjmp	.+26     	; 0x2f2 <IRDistanceRead+0x36>
-        break;
-
-    case 1:// Set pin 2 as read pin
-        ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  //PIN selection
- 2d8:	ec e7       	ldi	r30, 0x7C	; 124
- 2da:	f0 e0       	ldi	r31, 0x00	; 0
- 2dc:	80 81       	ld	r24, Z
- 2de:	88 7f       	andi	r24, 0xF8	; 248
- 2e0:	82 60       	ori	r24, 0x02	; 2
- 2e2:	80 83       	st	Z, r24
- 2e4:	06 c0       	rjmp	.+12     	; 0x2f2 <IRDistanceRead+0x36>
-        break;
-
-    case 2: // Set pin 4 as read pin
-         ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1)); //PIN selection
- 2e6:	ec e7       	ldi	r30, 0x7C	; 124
- 2e8:	f0 e0       	ldi	r31, 0x00	; 0
- 2ea:	80 81       	ld	r24, Z
- 2ec:	88 7f       	andi	r24, 0xF8	; 248
- 2ee:	84 60       	ori	r24, 0x04	; 4
- 2f0:	80 83       	st	Z, r24
-        break;
-    }
-
-
-
-    ADCSRA |= (1 << ADSC);
- 2f2:	ea e7       	ldi	r30, 0x7A	; 122
- 2f4:	f0 e0       	ldi	r31, 0x00	; 0
- 2f6:	80 81       	ld	r24, Z
- 2f8:	80 64       	ori	r24, 0x40	; 64
- 2fa:	80 83       	st	Z, r24
-    while ((ADCSRA & (1 << ADSC)) == 1);
- 2fc:	e0 81       	ld	r30, Z
-
-    // ADC data is left aligned and can be read from ADCH as an 8 bit value
-    Distance = (ADCH);
- 2fe:	80 91 79 00 	lds	r24, 0x0079
-
-
-    return Distance;
+000002bc <ColorSensorRead>:
 }
- 302:	90 e0       	ldi	r25, 0x00	; 0
- 304:	08 95       	ret
-
-00000306 <ColorSensorRead>:
 
 
 
 int ColorSensorRead(int sensor)
 {
- 306:	ef 92       	push	r14
- 308:	ff 92       	push	r15
- 30a:	0f 93       	push	r16
- 30c:	1f 93       	push	r17
- 30e:	df 93       	push	r29
- 310:	cf 93       	push	r28
- 312:	00 d0       	rcall	.+0      	; 0x314 <ColorSensorRead+0xe>
- 314:	00 d0       	rcall	.+0      	; 0x316 <ColorSensorRead+0x10>
- 316:	cd b7       	in	r28, 0x3d	; 61
- 318:	de b7       	in	r29, 0x3e	; 62
- 31a:	8c 01       	movw	r16, r24
+ 2bc:	ef 92       	push	r14
+ 2be:	ff 92       	push	r15
+ 2c0:	0f 93       	push	r16
+ 2c2:	1f 93       	push	r17
+ 2c4:	df 93       	push	r29
+ 2c6:	cf 93       	push	r28
+ 2c8:	00 d0       	rcall	.+0      	; 0x2ca <ColorSensorRead+0xe>
+ 2ca:	0f 92       	push	r0
+ 2cc:	cd b7       	in	r28, 0x3d	; 61
+ 2ce:	de b7       	in	r29, 0x3e	; 62
+ 2d0:	8c 01       	movw	r16, r24
     // initialize variables------------------------------------
-    volatile long width=0;
- 31c:	19 82       	std	Y+1, r1	; 0x01
- 31e:	1a 82       	std	Y+2, r1	; 0x02
- 320:	1b 82       	std	Y+3, r1	; 0x03
- 322:	1c 82       	std	Y+4, r1	; 0x04
- 324:	ee 24       	eor	r14, r14
- 326:	ff 24       	eor	r15, r15
- 328:	e3 94       	inc	r14
+    volatile int width=0;
+ 2d2:	1a 82       	std	Y+2, r1	; 0x02
+ 2d4:	19 82       	std	Y+1, r1	; 0x01
+ 2d6:	ee 24       	eor	r14, r14
+ 2d8:	ff 24       	eor	r15, r15
+ 2da:	e3 94       	inc	r14
         volatile int timeout=0;
         //-----------------------------------------------------
 
 
         // Wait until pin turns high then measure pulse width--
-        while( (TCS3200G_L) && (sensor == 0) && timeout++<TCS_Tout);
- 32a:	e3 e2       	ldi	r30, 0x23	; 35
- 32c:	f0 e0       	ldi	r31, 0x00	; 0
-    //---------------------------------------------------------
+        while( (TCS3200G_L) && (sensor == 0) && (timeout++<TCS_Tout) );         // Wait for pin to turn low to prevent possible error
+ 2dc:	e3 e2       	ldi	r30, 0x23	; 35
+ 2de:	f0 e0       	ldi	r31, 0x00	; 0
 
 
-    for(X=1; X<11; X++){
+    for(X=1; X<10; X++)
+    {
         //Create a timeout variable for error detection--------
         volatile int timeout=0;
- 32e:	1e 82       	std	Y+6, r1	; 0x06
- 330:	1d 82       	std	Y+5, r1	; 0x05
+ 2e0:	1c 82       	std	Y+4, r1	; 0x04
+ 2e2:	1b 82       	std	Y+3, r1	; 0x03
         //-----------------------------------------------------
 
 
         // Wait until pin turns high then measure pulse width--
-        while( (TCS3200G_L) && (sensor == 0) && timeout++<TCS_Tout);
- 332:	80 81       	ld	r24, Z
- 334:	83 ff       	sbrs	r24, 3
- 336:	0c c0       	rjmp	.+24     	; 0x350 <ColorSensorRead+0x4a>
- 338:	01 15       	cp	r16, r1
- 33a:	11 05       	cpc	r17, r1
- 33c:	49 f4       	brne	.+18     	; 0x350 <ColorSensorRead+0x4a>
- 33e:	2d 81       	ldd	r18, Y+5	; 0x05
- 340:	3e 81       	ldd	r19, Y+6	; 0x06
- 342:	c9 01       	movw	r24, r18
- 344:	01 96       	adiw	r24, 0x01	; 1
- 346:	9e 83       	std	Y+6, r25	; 0x06
- 348:	8d 83       	std	Y+5, r24	; 0x05
- 34a:	28 5e       	subi	r18, 0xE8	; 232
- 34c:	33 40       	sbci	r19, 0x03	; 3
- 34e:	8c f3       	brlt	.-30     	; 0x332 <ColorSensorRead+0x2c>
-        while(!(TCS3200G_L) && (sensor == 0) && timeout++<TCS_Tout);
- 350:	80 81       	ld	r24, Z
- 352:	83 fd       	sbrc	r24, 3
- 354:	0c c0       	rjmp	.+24     	; 0x36e <ColorSensorRead+0x68>
- 356:	01 15       	cp	r16, r1
- 358:	11 05       	cpc	r17, r1
- 35a:	49 f4       	brne	.+18     	; 0x36e <ColorSensorRead+0x68>
- 35c:	2d 81       	ldd	r18, Y+5	; 0x05
- 35e:	3e 81       	ldd	r19, Y+6	; 0x06
- 360:	c9 01       	movw	r24, r18
- 362:	01 96       	adiw	r24, 0x01	; 1
- 364:	9e 83       	std	Y+6, r25	; 0x06
- 366:	8d 83       	std	Y+5, r24	; 0x05
- 368:	28 5e       	subi	r18, 0xE8	; 232
- 36a:	33 40       	sbci	r19, 0x03	; 3
- 36c:	8c f3       	brlt	.-30     	; 0x350 <ColorSensorRead+0x4a>
-        while( (TCS3200G_L) && (sensor == 0) && timeout++<TCS_Tout)width++;
- 36e:	80 81       	ld	r24, Z
- 370:	83 ff       	sbrs	r24, 3
- 372:	23 c0       	rjmp	.+70     	; 0x3ba <ColorSensorRead+0xb4>
- 374:	01 15       	cp	r16, r1
- 376:	11 05       	cpc	r17, r1
- 378:	01 f5       	brne	.+64     	; 0x3ba <ColorSensorRead+0xb4>
- 37a:	2d 81       	ldd	r18, Y+5	; 0x05
- 37c:	3e 81       	ldd	r19, Y+6	; 0x06
- 37e:	c9 01       	movw	r24, r18
- 380:	01 96       	adiw	r24, 0x01	; 1
- 382:	9e 83       	std	Y+6, r25	; 0x06
- 384:	8d 83       	std	Y+5, r24	; 0x05
- 386:	28 5e       	subi	r18, 0xE8	; 232
- 388:	33 40       	sbci	r19, 0x03	; 3
- 38a:	bc f4       	brge	.+46     	; 0x3ba <ColorSensorRead+0xb4>
- 38c:	89 81       	ldd	r24, Y+1	; 0x01
- 38e:	9a 81       	ldd	r25, Y+2	; 0x02
- 390:	ab 81       	ldd	r26, Y+3	; 0x03
- 392:	bc 81       	ldd	r27, Y+4	; 0x04
- 394:	01 96       	adiw	r24, 0x01	; 1
- 396:	a1 1d       	adc	r26, r1
- 398:	b1 1d       	adc	r27, r1
- 39a:	89 83       	std	Y+1, r24	; 0x01
- 39c:	9a 83       	std	Y+2, r25	; 0x02
- 39e:	ab 83       	std	Y+3, r26	; 0x03
- 3a0:	bc 83       	std	Y+4, r27	; 0x04
- 3a2:	80 81       	ld	r24, Z
- 3a4:	83 ff       	sbrs	r24, 3
- 3a6:	09 c0       	rjmp	.+18     	; 0x3ba <ColorSensorRead+0xb4>
- 3a8:	2d 81       	ldd	r18, Y+5	; 0x05
- 3aa:	3e 81       	ldd	r19, Y+6	; 0x06
+        while( (TCS3200G_L) && (sensor == 0) && (timeout++<TCS_Tout) );         // Wait for pin to turn low to prevent possible error
+ 2e4:	80 81       	ld	r24, Z
+ 2e6:	83 ff       	sbrs	r24, 3
+ 2e8:	0c c0       	rjmp	.+24     	; 0x302 <ColorSensorRead+0x46>
+ 2ea:	01 15       	cp	r16, r1
+ 2ec:	11 05       	cpc	r17, r1
+ 2ee:	49 f4       	brne	.+18     	; 0x302 <ColorSensorRead+0x46>
+ 2f0:	2b 81       	ldd	r18, Y+3	; 0x03
+ 2f2:	3c 81       	ldd	r19, Y+4	; 0x04
+ 2f4:	c9 01       	movw	r24, r18
+ 2f6:	01 96       	adiw	r24, 0x01	; 1
+ 2f8:	9c 83       	std	Y+4, r25	; 0x04
+ 2fa:	8b 83       	std	Y+3, r24	; 0x03
+ 2fc:	20 5d       	subi	r18, 0xD0	; 208
+ 2fe:	37 40       	sbci	r19, 0x07	; 7
+ 300:	8c f3       	brlt	.-30     	; 0x2e4 <ColorSensorRead+0x28>
+        while(!(TCS3200G_L) && (sensor == 0) && (timeout++<TCS_Tout) );         // wait out the Low period
+ 302:	80 81       	ld	r24, Z
+ 304:	83 fd       	sbrc	r24, 3
+ 306:	0c c0       	rjmp	.+24     	; 0x320 <ColorSensorRead+0x64>
+ 308:	01 15       	cp	r16, r1
+ 30a:	11 05       	cpc	r17, r1
+ 30c:	49 f4       	brne	.+18     	; 0x320 <ColorSensorRead+0x64>
+ 30e:	2b 81       	ldd	r18, Y+3	; 0x03
+ 310:	3c 81       	ldd	r19, Y+4	; 0x04
+ 312:	c9 01       	movw	r24, r18
+ 314:	01 96       	adiw	r24, 0x01	; 1
+ 316:	9c 83       	std	Y+4, r25	; 0x04
+ 318:	8b 83       	std	Y+3, r24	; 0x03
+ 31a:	20 5d       	subi	r18, 0xD0	; 208
+ 31c:	37 40       	sbci	r19, 0x07	; 7
+ 31e:	8c f3       	brlt	.-30     	; 0x302 <ColorSensorRead+0x46>
+        while( (TCS3200G_L) && (sensor == 0) && (timeout++<TCS_Tout) )width++;  // Measure the pulse width
+ 320:	80 81       	ld	r24, Z
+ 322:	83 ff       	sbrs	r24, 3
+ 324:	1d c0       	rjmp	.+58     	; 0x360 <ColorSensorRead+0xa4>
+ 326:	01 15       	cp	r16, r1
+ 328:	11 05       	cpc	r17, r1
+ 32a:	d1 f4       	brne	.+52     	; 0x360 <ColorSensorRead+0xa4>
+ 32c:	2b 81       	ldd	r18, Y+3	; 0x03
+ 32e:	3c 81       	ldd	r19, Y+4	; 0x04
+ 330:	c9 01       	movw	r24, r18
+ 332:	01 96       	adiw	r24, 0x01	; 1
+ 334:	9c 83       	std	Y+4, r25	; 0x04
+ 336:	8b 83       	std	Y+3, r24	; 0x03
+ 338:	20 5d       	subi	r18, 0xD0	; 208
+ 33a:	37 40       	sbci	r19, 0x07	; 7
+ 33c:	8c f4       	brge	.+34     	; 0x360 <ColorSensorRead+0xa4>
+ 33e:	89 81       	ldd	r24, Y+1	; 0x01
+ 340:	9a 81       	ldd	r25, Y+2	; 0x02
+ 342:	01 96       	adiw	r24, 0x01	; 1
+ 344:	9a 83       	std	Y+2, r25	; 0x02
+ 346:	89 83       	std	Y+1, r24	; 0x01
+ 348:	80 81       	ld	r24, Z
+ 34a:	83 ff       	sbrs	r24, 3
+ 34c:	09 c0       	rjmp	.+18     	; 0x360 <ColorSensorRead+0xa4>
+ 34e:	2b 81       	ldd	r18, Y+3	; 0x03
+ 350:	3c 81       	ldd	r19, Y+4	; 0x04
+ 352:	c9 01       	movw	r24, r18
+ 354:	01 96       	adiw	r24, 0x01	; 1
+ 356:	9c 83       	std	Y+4, r25	; 0x04
+ 358:	8b 83       	std	Y+3, r24	; 0x03
+ 35a:	20 5d       	subi	r18, 0xD0	; 208
+ 35c:	37 40       	sbci	r19, 0x07	; 7
+ 35e:	7c f3       	brlt	.-34     	; 0x33e <ColorSensorRead+0x82>
+
+        while( (TCS3200G_R) && (sensor == 1) && (timeout++<TCS_Tout) );         // Wait for pin to turn low to prevent possible error
+ 360:	80 81       	ld	r24, Z
+ 362:	84 ff       	sbrs	r24, 4
+ 364:	0c c0       	rjmp	.+24     	; 0x37e <ColorSensorRead+0xc2>
+ 366:	01 30       	cpi	r16, 0x01	; 1
+ 368:	11 05       	cpc	r17, r1
+ 36a:	49 f4       	brne	.+18     	; 0x37e <ColorSensorRead+0xc2>
+ 36c:	2b 81       	ldd	r18, Y+3	; 0x03
+ 36e:	3c 81       	ldd	r19, Y+4	; 0x04
+ 370:	c9 01       	movw	r24, r18
+ 372:	01 96       	adiw	r24, 0x01	; 1
+ 374:	9c 83       	std	Y+4, r25	; 0x04
+ 376:	8b 83       	std	Y+3, r24	; 0x03
+ 378:	20 5d       	subi	r18, 0xD0	; 208
+ 37a:	37 40       	sbci	r19, 0x07	; 7
+ 37c:	8c f3       	brlt	.-30     	; 0x360 <ColorSensorRead+0xa4>
+        while(!(TCS3200G_R) && (sensor == 1) && (timeout++<TCS_Tout) );         // wait out the Low period
+ 37e:	80 81       	ld	r24, Z
+ 380:	84 fd       	sbrc	r24, 4
+ 382:	0c c0       	rjmp	.+24     	; 0x39c <ColorSensorRead+0xe0>
+ 384:	01 30       	cpi	r16, 0x01	; 1
+ 386:	11 05       	cpc	r17, r1
+ 388:	49 f4       	brne	.+18     	; 0x39c <ColorSensorRead+0xe0>
+ 38a:	2b 81       	ldd	r18, Y+3	; 0x03
+ 38c:	3c 81       	ldd	r19, Y+4	; 0x04
+ 38e:	c9 01       	movw	r24, r18
+ 390:	01 96       	adiw	r24, 0x01	; 1
+ 392:	9c 83       	std	Y+4, r25	; 0x04
+ 394:	8b 83       	std	Y+3, r24	; 0x03
+ 396:	20 5d       	subi	r18, 0xD0	; 208
+ 398:	37 40       	sbci	r19, 0x07	; 7
+ 39a:	8c f3       	brlt	.-30     	; 0x37e <ColorSensorRead+0xc2>
+        while( (TCS3200G_R) && (sensor == 1) && (timeout++<TCS_Tout) )width++;  // Measure the pulse width
+ 39c:	80 81       	ld	r24, Z
+ 39e:	84 ff       	sbrs	r24, 4
+ 3a0:	1d c0       	rjmp	.+58     	; 0x3dc <ColorSensorRead+0x120>
+ 3a2:	01 30       	cpi	r16, 0x01	; 1
+ 3a4:	11 05       	cpc	r17, r1
+ 3a6:	d1 f4       	brne	.+52     	; 0x3dc <ColorSensorRead+0x120>
+ 3a8:	2b 81       	ldd	r18, Y+3	; 0x03
+ 3aa:	3c 81       	ldd	r19, Y+4	; 0x04
  3ac:	c9 01       	movw	r24, r18
  3ae:	01 96       	adiw	r24, 0x01	; 1
- 3b0:	9e 83       	std	Y+6, r25	; 0x06
- 3b2:	8d 83       	std	Y+5, r24	; 0x05
- 3b4:	28 5e       	subi	r18, 0xE8	; 232
- 3b6:	33 40       	sbci	r19, 0x03	; 3
- 3b8:	4c f3       	brlt	.-46     	; 0x38c <ColorSensorRead+0x86>
-
-        while( (TCS3200G_R) && (sensor == 1) && timeout++<TCS_Tout);
- 3ba:	80 81       	ld	r24, Z
- 3bc:	84 ff       	sbrs	r24, 4
- 3be:	0c c0       	rjmp	.+24     	; 0x3d8 <ColorSensorRead+0xd2>
- 3c0:	01 30       	cpi	r16, 0x01	; 1
- 3c2:	11 05       	cpc	r17, r1
- 3c4:	49 f4       	brne	.+18     	; 0x3d8 <ColorSensorRead+0xd2>
- 3c6:	2d 81       	ldd	r18, Y+5	; 0x05
- 3c8:	3e 81       	ldd	r19, Y+6	; 0x06
- 3ca:	c9 01       	movw	r24, r18
- 3cc:	01 96       	adiw	r24, 0x01	; 1
- 3ce:	9e 83       	std	Y+6, r25	; 0x06
- 3d0:	8d 83       	std	Y+5, r24	; 0x05
- 3d2:	28 5e       	subi	r18, 0xE8	; 232
- 3d4:	33 40       	sbci	r19, 0x03	; 3
- 3d6:	8c f3       	brlt	.-30     	; 0x3ba <ColorSensorRead+0xb4>
-        while(!(TCS3200G_R) && (sensor == 1) && timeout++<TCS_Tout);
- 3d8:	80 81       	ld	r24, Z
- 3da:	84 fd       	sbrc	r24, 4
- 3dc:	0c c0       	rjmp	.+24     	; 0x3f6 <ColorSensorRead+0xf0>
- 3de:	01 30       	cpi	r16, 0x01	; 1
- 3e0:	11 05       	cpc	r17, r1
- 3e2:	49 f4       	brne	.+18     	; 0x3f6 <ColorSensorRead+0xf0>
- 3e4:	2d 81       	ldd	r18, Y+5	; 0x05
- 3e6:	3e 81       	ldd	r19, Y+6	; 0x06
- 3e8:	c9 01       	movw	r24, r18
- 3ea:	01 96       	adiw	r24, 0x01	; 1
- 3ec:	9e 83       	std	Y+6, r25	; 0x06
- 3ee:	8d 83       	std	Y+5, r24	; 0x05
- 3f0:	28 5e       	subi	r18, 0xE8	; 232
- 3f2:	33 40       	sbci	r19, 0x03	; 3
- 3f4:	8c f3       	brlt	.-30     	; 0x3d8 <ColorSensorRead+0xd2>
-        while( (TCS3200G_R) && (sensor == 1) && timeout++<TCS_Tout)width++;
- 3f6:	80 81       	ld	r24, Z
- 3f8:	84 ff       	sbrs	r24, 4
- 3fa:	23 c0       	rjmp	.+70     	; 0x442 <ColorSensorRead+0x13c>
- 3fc:	01 30       	cpi	r16, 0x01	; 1
- 3fe:	11 05       	cpc	r17, r1
- 400:	01 f5       	brne	.+64     	; 0x442 <ColorSensorRead+0x13c>
- 402:	2d 81       	ldd	r18, Y+5	; 0x05
- 404:	3e 81       	ldd	r19, Y+6	; 0x06
- 406:	c9 01       	movw	r24, r18
- 408:	01 96       	adiw	r24, 0x01	; 1
- 40a:	9e 83       	std	Y+6, r25	; 0x06
- 40c:	8d 83       	std	Y+5, r24	; 0x05
- 40e:	28 5e       	subi	r18, 0xE8	; 232
- 410:	33 40       	sbci	r19, 0x03	; 3
- 412:	bc f4       	brge	.+46     	; 0x442 <ColorSensorRead+0x13c>
- 414:	89 81       	ldd	r24, Y+1	; 0x01
- 416:	9a 81       	ldd	r25, Y+2	; 0x02
- 418:	ab 81       	ldd	r26, Y+3	; 0x03
- 41a:	bc 81       	ldd	r27, Y+4	; 0x04
- 41c:	01 96       	adiw	r24, 0x01	; 1
- 41e:	a1 1d       	adc	r26, r1
- 420:	b1 1d       	adc	r27, r1
- 422:	89 83       	std	Y+1, r24	; 0x01
- 424:	9a 83       	std	Y+2, r25	; 0x02
- 426:	ab 83       	std	Y+3, r26	; 0x03
- 428:	bc 83       	std	Y+4, r27	; 0x04
- 42a:	80 81       	ld	r24, Z
- 42c:	84 ff       	sbrs	r24, 4
- 42e:	09 c0       	rjmp	.+18     	; 0x442 <ColorSensorRead+0x13c>
- 430:	2d 81       	ldd	r18, Y+5	; 0x05
- 432:	3e 81       	ldd	r19, Y+6	; 0x06
- 434:	c9 01       	movw	r24, r18
- 436:	01 96       	adiw	r24, 0x01	; 1
- 438:	9e 83       	std	Y+6, r25	; 0x06
- 43a:	8d 83       	std	Y+5, r24	; 0x05
- 43c:	28 5e       	subi	r18, 0xE8	; 232
- 43e:	33 40       	sbci	r19, 0x03	; 3
- 440:	4c f3       	brlt	.-46     	; 0x414 <ColorSensorRead+0x10e>
+ 3b0:	9c 83       	std	Y+4, r25	; 0x04
+ 3b2:	8b 83       	std	Y+3, r24	; 0x03
+ 3b4:	20 5d       	subi	r18, 0xD0	; 208
+ 3b6:	37 40       	sbci	r19, 0x07	; 7
+ 3b8:	8c f4       	brge	.+34     	; 0x3dc <ColorSensorRead+0x120>
+ 3ba:	89 81       	ldd	r24, Y+1	; 0x01
+ 3bc:	9a 81       	ldd	r25, Y+2	; 0x02
+ 3be:	01 96       	adiw	r24, 0x01	; 1
+ 3c0:	9a 83       	std	Y+2, r25	; 0x02
+ 3c2:	89 83       	std	Y+1, r24	; 0x01
+ 3c4:	80 81       	ld	r24, Z
+ 3c6:	84 ff       	sbrs	r24, 4
+ 3c8:	09 c0       	rjmp	.+18     	; 0x3dc <ColorSensorRead+0x120>
+ 3ca:	2b 81       	ldd	r18, Y+3	; 0x03
+ 3cc:	3c 81       	ldd	r19, Y+4	; 0x04
+ 3ce:	c9 01       	movw	r24, r18
+ 3d0:	01 96       	adiw	r24, 0x01	; 1
+ 3d2:	9c 83       	std	Y+4, r25	; 0x04
+ 3d4:	8b 83       	std	Y+3, r24	; 0x03
+ 3d6:	20 5d       	subi	r18, 0xD0	; 208
+ 3d8:	37 40       	sbci	r19, 0x07	; 7
+ 3da:	7c f3       	brlt	.-34     	; 0x3ba <ColorSensorRead+0xfe>
         //-----------------------------------------------------
 
 
-        // Display error code with data and return 0 for error-
-        if(timeout==1000){
- 442:	8d 81       	ldd	r24, Y+5	; 0x05
- 444:	9e 81       	ldd	r25, Y+6	; 0x06
- 446:	88 5e       	subi	r24, 0xE8	; 232
- 448:	93 40       	sbci	r25, 0x03	; 3
- 44a:	c1 f4       	brne	.+48     	; 0x47c <ColorSensorRead+0x176>
+        if( timeout == TCS_Tout )   // Catch a timeout scenario and end the function early returning a 0 to the program
+ 3dc:	8b 81       	ldd	r24, Y+3	; 0x03
+ 3de:	9c 81       	ldd	r25, Y+4	; 0x04
+ 3e0:	80 5d       	subi	r24, 0xD0	; 208
+ 3e2:	97 40       	sbci	r25, 0x07	; 7
+ 3e4:	c1 f4       	brne	.+48     	; 0x416 <ColorSensorRead+0x15a>
+        {                           // Display error code with data and return 0 for error-
             printString("warning TCS ");
- 44c:	80 e0       	ldi	r24, 0x00	; 0
- 44e:	92 e0       	ldi	r25, 0x02	; 2
- 450:	0e 94 cd 02 	call	0x59a	; 0x59a <printString>
+ 3e6:	80 e0       	ldi	r24, 0x00	; 0
+ 3e8:	92 e0       	ldi	r25, 0x02	; 2
+ 3ea:	0e 94 12 03 	call	0x624	; 0x624 <printString>
             printByte(sensor);
- 454:	80 2f       	mov	r24, r16
- 456:	0e 94 0e 03 	call	0x61c	; 0x61c <printByte>
+ 3ee:	80 2f       	mov	r24, r16
+ 3f0:	0e 94 53 03 	call	0x6a6	; 0x6a6 <printByte>
             printString(" out of boundaries after: ");
- 45a:	8d e0       	ldi	r24, 0x0D	; 13
- 45c:	92 e0       	ldi	r25, 0x02	; 2
- 45e:	0e 94 cd 02 	call	0x59a	; 0x59a <printString>
+ 3f4:	8d e0       	ldi	r24, 0x0D	; 13
+ 3f6:	92 e0       	ldi	r25, 0x02	; 2
+ 3f8:	0e 94 12 03 	call	0x624	; 0x624 <printString>
             printByte(X);
- 462:	8e 2d       	mov	r24, r14
- 464:	0e 94 0e 03 	call	0x61c	; 0x61c <printByte>
+ 3fc:	8e 2d       	mov	r24, r14
+ 3fe:	0e 94 53 03 	call	0x6a6	; 0x6a6 <printByte>
             printString(" runs");
- 468:	88 e2       	ldi	r24, 0x28	; 40
- 46a:	92 e0       	ldi	r25, 0x02	; 2
- 46c:	0e 94 cd 02 	call	0x59a	; 0x59a <printString>
+ 402:	88 e2       	ldi	r24, 0x28	; 40
+ 404:	92 e0       	ldi	r25, 0x02	; 2
+ 406:	0e 94 12 03 	call	0x624	; 0x624 <printString>
             printByte('\n');
- 470:	8a e0       	ldi	r24, 0x0A	; 10
- 472:	0e 94 0e 03 	call	0x61c	; 0x61c <printByte>
- 476:	20 e0       	ldi	r18, 0x00	; 0
- 478:	30 e0       	ldi	r19, 0x00	; 0
- 47a:	20 c0       	rjmp	.+64     	; 0x4bc <ColorSensorRead+0x1b6>
-    volatile long width=0;
+ 40a:	8a e0       	ldi	r24, 0x0A	; 10
+ 40c:	0e 94 53 03 	call	0x6a6	; 0x6a6 <printByte>
+ 410:	20 e0       	ldi	r18, 0x00	; 0
+ 412:	30 e0       	ldi	r19, 0x00	; 0
+ 414:	13 c0       	rjmp	.+38     	; 0x43c <ColorSensorRead+0x180>
+    volatile int width=0;
     int X;
     //---------------------------------------------------------
 
 
-    for(X=1; X<11; X++){
- 47c:	08 94       	sec
- 47e:	e1 1c       	adc	r14, r1
- 480:	f1 1c       	adc	r15, r1
- 482:	8b e0       	ldi	r24, 0x0B	; 11
- 484:	e8 16       	cp	r14, r24
- 486:	f1 04       	cpc	r15, r1
- 488:	09 f0       	breq	.+2      	; 0x48c <ColorSensorRead+0x186>
- 48a:	51 cf       	rjmp	.-350    	; 0x32e <ColorSensorRead+0x28>
+    for(X=1; X<10; X++)
+ 416:	08 94       	sec
+ 418:	e1 1c       	adc	r14, r1
+ 41a:	f1 1c       	adc	r15, r1
+ 41c:	8a e0       	ldi	r24, 0x0A	; 10
+ 41e:	e8 16       	cp	r14, r24
+ 420:	f1 04       	cpc	r15, r1
+ 422:	09 f0       	breq	.+2      	; 0x426 <ColorSensorRead+0x16a>
+ 424:	5d cf       	rjmp	.-326    	; 0x2e0 <ColorSensorRead+0x24>
         }
         //-----------------------------------------------------
     }
 
-    //Take the average value of the measurement rounding down--
+    //Take the average value of the measurements rounding down--
     width = width / X;
- 48c:	69 81       	ldd	r22, Y+1	; 0x01
- 48e:	7a 81       	ldd	r23, Y+2	; 0x02
- 490:	8b 81       	ldd	r24, Y+3	; 0x03
- 492:	9c 81       	ldd	r25, Y+4	; 0x04
- 494:	97 01       	movw	r18, r14
- 496:	44 27       	eor	r20, r20
- 498:	37 fd       	sbrc	r19, 7
- 49a:	40 95       	com	r20
- 49c:	54 2f       	mov	r21, r20
- 49e:	0e 94 4c 03 	call	0x698	; 0x698 <__divmodsi4>
- 4a2:	82 2f       	mov	r24, r18
- 4a4:	93 2f       	mov	r25, r19
- 4a6:	a4 2f       	mov	r26, r20
- 4a8:	b5 2f       	mov	r27, r21
- 4aa:	89 83       	std	Y+1, r24	; 0x01
- 4ac:	9a 83       	std	Y+2, r25	; 0x02
- 4ae:	ab 83       	std	Y+3, r26	; 0x03
- 4b0:	bc 83       	std	Y+4, r27	; 0x04
+ 426:	89 81       	ldd	r24, Y+1	; 0x01
+ 428:	9a 81       	ldd	r25, Y+2	; 0x02
+ 42a:	b7 01       	movw	r22, r14
+ 42c:	0e 94 91 03 	call	0x722	; 0x722 <__divmodhi4>
+ 430:	86 2f       	mov	r24, r22
+ 432:	97 2f       	mov	r25, r23
+ 434:	9a 83       	std	Y+2, r25	; 0x02
+ 436:	89 83       	std	Y+1, r24	; 0x01
     //---------------------------------------------------------
 
 
     return width; // Return value
- 4b2:	89 81       	ldd	r24, Y+1	; 0x01
- 4b4:	9a 81       	ldd	r25, Y+2	; 0x02
- 4b6:	ab 81       	ldd	r26, Y+3	; 0x03
- 4b8:	bc 81       	ldd	r27, Y+4	; 0x04
- 4ba:	9c 01       	movw	r18, r24
+ 438:	29 81       	ldd	r18, Y+1	; 0x01
+ 43a:	3a 81       	ldd	r19, Y+2	; 0x02
 }
- 4bc:	82 2f       	mov	r24, r18
- 4be:	93 2f       	mov	r25, r19
- 4c0:	26 96       	adiw	r28, 0x06	; 6
- 4c2:	0f b6       	in	r0, 0x3f	; 63
- 4c4:	f8 94       	cli
- 4c6:	de bf       	out	0x3e, r29	; 62
- 4c8:	0f be       	out	0x3f, r0	; 63
- 4ca:	cd bf       	out	0x3d, r28	; 61
- 4cc:	cf 91       	pop	r28
- 4ce:	df 91       	pop	r29
- 4d0:	1f 91       	pop	r17
- 4d2:	0f 91       	pop	r16
- 4d4:	ff 90       	pop	r15
- 4d6:	ef 90       	pop	r14
- 4d8:	08 95       	ret
+ 43c:	82 2f       	mov	r24, r18
+ 43e:	93 2f       	mov	r25, r19
+ 440:	0f 90       	pop	r0
+ 442:	0f 90       	pop	r0
+ 444:	0f 90       	pop	r0
+ 446:	0f 90       	pop	r0
+ 448:	cf 91       	pop	r28
+ 44a:	df 91       	pop	r29
+ 44c:	1f 91       	pop	r17
+ 44e:	0f 91       	pop	r16
+ 450:	ff 90       	pop	r15
+ 452:	ef 90       	pop	r14
+ 454:	08 95       	ret
 
-000004da <main>:
+00000456 <IRDistanceRead>:
+}
+
+
+
+int IRDistanceRead(int sensor)
+{
+ 456:	df 93       	push	r29
+ 458:	cf 93       	push	r28
+ 45a:	0f 92       	push	r0
+ 45c:	0f 92       	push	r0
+ 45e:	cd b7       	in	r28, 0x3d	; 61
+ 460:	de b7       	in	r29, 0x3e	; 62
+    // initialize variables------------------------------------
+    int distance=0;
+    volatile int timeout=0;
+ 462:	1a 82       	std	Y+2, r1	; 0x02
+ 464:	19 82       	std	Y+1, r1	; 0x01
+    int X;
+    //---------------------------------------------------------
+
+
+    // Switch the ADC to the correct pin-----------------------
+    switch (sensor)
+ 466:	81 30       	cpi	r24, 0x01	; 1
+ 468:	91 05       	cpc	r25, r1
+ 46a:	59 f0       	breq	.+22     	; 0x482 <IRDistanceRead+0x2c>
+ 46c:	82 30       	cpi	r24, 0x02	; 2
+ 46e:	91 05       	cpc	r25, r1
+ 470:	99 f1       	breq	.+102    	; 0x4d8 <IRDistanceRead+0x82>
+ 472:	89 2b       	or	r24, r25
+ 474:	61 f4       	brne	.+24     	; 0x48e <IRDistanceRead+0x38>
+    {
+    case 0:                                                     // Set pin 0 as read pin
+        ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    //PIN selection
+ 476:	ec e7       	ldi	r30, 0x7C	; 124
+ 478:	f0 e0       	ldi	r31, 0x00	; 0
+ 47a:	80 81       	ld	r24, Z
+ 47c:	88 7f       	andi	r24, 0xF8	; 248
+ 47e:	80 83       	st	Z, r24
+ 480:	06 c0       	rjmp	.+12     	; 0x48e <IRDistanceRead+0x38>
+        break;
+
+    case 1:                                                     // Set pin 2 as read pin
+        ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  //PIN selection
+ 482:	ec e7       	ldi	r30, 0x7C	; 124
+ 484:	f0 e0       	ldi	r31, 0x00	; 0
+ 486:	80 81       	ld	r24, Z
+ 488:	88 7f       	andi	r24, 0xF8	; 248
+ 48a:	82 60       	ori	r24, 0x02	; 2
+ 48c:	80 83       	st	Z, r24
+
+    // Take measurements with the ADC and collect the average--
+    for(X=1; X<5; X++)
+    {
+
+        ADCSRA |= (1 << ADSC);                                              // Start the conversion
+ 48e:	ea e7       	ldi	r30, 0x7A	; 122
+ 490:	f0 e0       	ldi	r31, 0x00	; 0
+ 492:	80 81       	ld	r24, Z
+ 494:	80 64       	ori	r24, 0x40	; 64
+ 496:	80 83       	st	Z, r24
+        while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
+ 498:	80 81       	ld	r24, Z
+        distance += (ADCH);                                                 // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 49a:	a9 e7       	ldi	r26, 0x79	; 121
+ 49c:	b0 e0       	ldi	r27, 0x00	; 0
+ 49e:	2c 91       	ld	r18, X
+
+    // Take measurements with the ADC and collect the average--
+    for(X=1; X<5; X++)
+    {
+
+        ADCSRA |= (1 << ADSC);                                              // Start the conversion
+ 4a0:	80 81       	ld	r24, Z
+ 4a2:	80 64       	ori	r24, 0x40	; 64
+ 4a4:	80 83       	st	Z, r24
+        while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
+ 4a6:	80 81       	ld	r24, Z
+        distance += (ADCH);                                                 // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 4a8:	9c 91       	ld	r25, X
+
+    // Take measurements with the ADC and collect the average--
+    for(X=1; X<5; X++)
+    {
+
+        ADCSRA |= (1 << ADSC);                                              // Start the conversion
+ 4aa:	80 81       	ld	r24, Z
+ 4ac:	80 64       	ori	r24, 0x40	; 64
+ 4ae:	80 83       	st	Z, r24
+        while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
+ 4b0:	80 81       	ld	r24, Z
+        distance += (ADCH);                                                 // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 4b2:	8c 91       	ld	r24, X
+ 4b4:	30 e0       	ldi	r19, 0x00	; 0
+ 4b6:	29 0f       	add	r18, r25
+ 4b8:	31 1d       	adc	r19, r1
+ 4ba:	28 0f       	add	r18, r24
+ 4bc:	31 1d       	adc	r19, r1
+
+    // Take measurements with the ADC and collect the average--
+    for(X=1; X<5; X++)
+    {
+
+        ADCSRA |= (1 << ADSC);                                              // Start the conversion
+ 4be:	80 81       	ld	r24, Z
+ 4c0:	80 64       	ori	r24, 0x40	; 64
+ 4c2:	80 83       	st	Z, r24
+        while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
+ 4c4:	e0 81       	ld	r30, Z
+        distance += (ADCH);                                                 // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 4c6:	8c 91       	ld	r24, X
+ 4c8:	28 0f       	add	r18, r24
+ 4ca:	31 1d       	adc	r19, r1
+    }                                                                       // Because ADC value is an 8 bit value overflow is impossible
+    //---------------------------------------------------------
+
+
+    // If a timeout occurs attempt to retry the measurement----
+    if( timeout == ADC_Tout/2 )     // Catch a timeout scenario and retry returning 0 on failure
+ 4cc:	89 81       	ldd	r24, Y+1	; 0x01
+ 4ce:	9a 81       	ldd	r25, Y+2	; 0x02
+ 4d0:	84 5f       	subi	r24, 0xF4	; 244
+ 4d2:	91 40       	sbci	r25, 0x01	; 1
+ 4d4:	e9 f5       	brne	.+122    	; 0x550 <IRDistanceRead+0xfa>
+ 4d6:	07 c0       	rjmp	.+14     	; 0x4e6 <IRDistanceRead+0x90>
+    case 1:                                                     // Set pin 2 as read pin
+        ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  //PIN selection
+        break;
+
+    case 2:                                                     // Set pin 4 as read pin
+        ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1));  //PIN selection
+ 4d8:	ec e7       	ldi	r30, 0x7C	; 124
+ 4da:	f0 e0       	ldi	r31, 0x00	; 0
+ 4dc:	80 81       	ld	r24, Z
+ 4de:	88 7f       	andi	r24, 0xF8	; 248
+ 4e0:	84 60       	ori	r24, 0x04	; 4
+ 4e2:	80 83       	st	Z, r24
+ 4e4:	d4 cf       	rjmp	.-88     	; 0x48e <IRDistanceRead+0x38>
+
+
+    // If a timeout occurs attempt to retry the measurement----
+    if( timeout == ADC_Tout/2 )     // Catch a timeout scenario and retry returning 0 on failure
+    {                               // Display error code with data and return 0 on retry failure
+        printString("warning ADC out of boundaries retrying");
+ 4e6:	8e e2       	ldi	r24, 0x2E	; 46
+ 4e8:	92 e0       	ldi	r25, 0x02	; 2
+ 4ea:	0e 94 12 03 	call	0x624	; 0x624 <printString>
+        printByte('\n');
+ 4ee:	8a e0       	ldi	r24, 0x0A	; 10
+ 4f0:	0e 94 53 03 	call	0x6a6	; 0x6a6 <printByte>
+        distance=0;
+        for(X=1; X<5; X++)
+        {
+            ADCSRA |= (1 << ADSC);                                          // Start the conversion
+ 4f4:	ea e7       	ldi	r30, 0x7A	; 122
+ 4f6:	f0 e0       	ldi	r31, 0x00	; 0
+ 4f8:	80 81       	ld	r24, Z
+ 4fa:	80 64       	ori	r24, 0x40	; 64
+ 4fc:	80 83       	st	Z, r24
+            while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );   // Wait until conversion is finished
+ 4fe:	80 81       	ld	r24, Z
+            distance += (ADCH);                                             // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 500:	a9 e7       	ldi	r26, 0x79	; 121
+ 502:	b0 e0       	ldi	r27, 0x00	; 0
+ 504:	9c 91       	ld	r25, X
+        printString("warning ADC out of boundaries retrying");
+        printByte('\n');
+        distance=0;
+        for(X=1; X<5; X++)
+        {
+            ADCSRA |= (1 << ADSC);                                          // Start the conversion
+ 506:	80 81       	ld	r24, Z
+ 508:	80 64       	ori	r24, 0x40	; 64
+ 50a:	80 83       	st	Z, r24
+            while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );   // Wait until conversion is finished
+ 50c:	80 81       	ld	r24, Z
+            distance += (ADCH);                                             // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 50e:	2c 91       	ld	r18, X
+        printString("warning ADC out of boundaries retrying");
+        printByte('\n');
+        distance=0;
+        for(X=1; X<5; X++)
+        {
+            ADCSRA |= (1 << ADSC);                                          // Start the conversion
+ 510:	80 81       	ld	r24, Z
+ 512:	80 64       	ori	r24, 0x40	; 64
+ 514:	80 83       	st	Z, r24
+            while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );   // Wait until conversion is finished
+ 516:	80 81       	ld	r24, Z
+            distance += (ADCH);                                             // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 518:	8c 91       	ld	r24, X
+ 51a:	30 e0       	ldi	r19, 0x00	; 0
+ 51c:	28 0f       	add	r18, r24
+ 51e:	31 1d       	adc	r19, r1
+ 520:	29 0f       	add	r18, r25
+ 522:	31 1d       	adc	r19, r1
+        printString("warning ADC out of boundaries retrying");
+        printByte('\n');
+        distance=0;
+        for(X=1; X<5; X++)
+        {
+            ADCSRA |= (1 << ADSC);                                          // Start the conversion
+ 524:	80 81       	ld	r24, Z
+ 526:	80 64       	ori	r24, 0x40	; 64
+ 528:	80 83       	st	Z, r24
+            while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );   // Wait until conversion is finished
+ 52a:	e0 81       	ld	r30, Z
+            distance += (ADCH);                                             // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+ 52c:	8c 91       	ld	r24, X
+ 52e:	28 0f       	add	r18, r24
+ 530:	31 1d       	adc	r19, r1
+        }
+        if( timeout == ADC_Tout){                                           // if retry has failed return 0
+ 532:	89 81       	ldd	r24, Y+1	; 0x01
+ 534:	9a 81       	ldd	r25, Y+2	; 0x02
+ 536:	88 5e       	subi	r24, 0xE8	; 232
+ 538:	93 40       	sbci	r25, 0x03	; 3
+ 53a:	51 f4       	brne	.+20     	; 0x550 <IRDistanceRead+0xfa>
+            printString("Retry failed");
+ 53c:	85 e5       	ldi	r24, 0x55	; 85
+ 53e:	92 e0       	ldi	r25, 0x02	; 2
+ 540:	0e 94 12 03 	call	0x624	; 0x624 <printString>
+            printByte('\n');
+ 544:	8a e0       	ldi	r24, 0x0A	; 10
+ 546:	0e 94 53 03 	call	0x6a6	; 0x6a6 <printByte>
+ 54a:	20 e0       	ldi	r18, 0x00	; 0
+ 54c:	30 e0       	ldi	r19, 0x00	; 0
+ 54e:	08 c0       	rjmp	.+16     	; 0x560 <IRDistanceRead+0x10a>
+    }
+    //---------------------------------------------------------
+
+
+    //Take the average value of the measurements rounding down-
+    distance = distance / X;
+ 550:	c9 01       	movw	r24, r18
+ 552:	65 e0       	ldi	r22, 0x05	; 5
+ 554:	70 e0       	ldi	r23, 0x00	; 0
+ 556:	0e 94 91 03 	call	0x722	; 0x722 <__divmodhi4>
+ 55a:	86 2f       	mov	r24, r22
+ 55c:	97 2f       	mov	r25, r23
+ 55e:	9c 01       	movw	r18, r24
+    //---------------------------------------------------------
+
+    return distance;
+}
+ 560:	82 2f       	mov	r24, r18
+ 562:	93 2f       	mov	r25, r19
+ 564:	0f 90       	pop	r0
+ 566:	0f 90       	pop	r0
+ 568:	cf 91       	pop	r28
+ 56a:	df 91       	pop	r29
+ 56c:	08 95       	ret
+
+0000056e <main>:
 
 int main(void)
 {
 
 //-Initialise ADCs---------
     ADMUX |= (0 << REFS1) |(1 << REFS0)|(1<<ADLAR);     //Voltage reference via capacitor on arduino
- 4da:	ec e7       	ldi	r30, 0x7C	; 124
- 4dc:	f0 e0       	ldi	r31, 0x00	; 0
- 4de:	80 81       	ld	r24, Z
- 4e0:	80 66       	ori	r24, 0x60	; 96
- 4e2:	80 83       	st	Z, r24
+ 56e:	ec e7       	ldi	r30, 0x7C	; 124
+ 570:	f0 e0       	ldi	r31, 0x00	; 0
+ 572:	80 81       	ld	r24, Z
+ 574:	80 66       	ori	r24, 0x60	; 96
+ 576:	80 83       	st	Z, r24
     ADCSRA |= (1 << ADEN) |(0 << ADIE);                 //ADC enable and ADC conversion complete interrupt disabled
- 4e4:	ea e7       	ldi	r30, 0x7A	; 122
- 4e6:	f0 e0       	ldi	r31, 0x00	; 0
- 4e8:	80 81       	ld	r24, Z
- 4ea:	80 68       	ori	r24, 0x80	; 128
- 4ec:	80 83       	st	Z, r24
+ 578:	ea e7       	ldi	r30, 0x7A	; 122
+ 57a:	f0 e0       	ldi	r31, 0x00	; 0
+ 57c:	80 81       	ld	r24, Z
+ 57e:	80 68       	ori	r24, 0x80	; 128
+ 580:	80 83       	st	Z, r24
     ADCSRA |= (1 << ADPS2)|(1 << ADPS1)|(1 << ADPS0);   //Prescaler settings (Currently 128)
- 4ee:	80 81       	ld	r24, Z
- 4f0:	87 60       	ori	r24, 0x07	; 7
- 4f2:	80 83       	st	Z, r24
+ 582:	80 81       	ld	r24, Z
+ 584:	87 60       	ori	r24, 0x07	; 7
+ 586:	80 83       	st	Z, r24
     DIDR0 = 0b11111111;                                 //Disable Digital input
- 4f4:	8f ef       	ldi	r24, 0xFF	; 255
- 4f6:	80 93 7e 00 	sts	0x007E, r24
+ 588:	8f ef       	ldi	r24, 0xFF	; 255
+ 58a:	80 93 7e 00 	sts	0x007E, r24
     DIDR2 = 0b11111111;                                 //Disable Digital input
- 4fa:	80 93 7d 00 	sts	0x007D, r24
+ 58e:	80 93 7d 00 	sts	0x007D, r24
     ADCSRA |= (1 << ADSC);                              //Run a single conversion in order to prime the circuit
- 4fe:	80 81       	ld	r24, Z
- 500:	80 64       	ori	r24, 0x40	; 64
- 502:	80 83       	st	Z, r24
+ 592:	80 81       	ld	r24, Z
+ 594:	80 64       	ori	r24, 0x40	; 64
+ 596:	80 83       	st	Z, r24
 
 //-------------------------
 
 
 //-Initialise Serial-------
     initUSART();
- 504:	0e 94 ab 02 	call	0x556	; 0x556 <initUSART>
-    printString("RDY");
- 508:	8e e2       	ldi	r24, 0x2E	; 46
- 50a:	92 e0       	ldi	r25, 0x02	; 2
- 50c:	0e 94 cd 02 	call	0x59a	; 0x59a <printString>
+ 598:	0e 94 f0 02 	call	0x5e0	; 0x5e0 <initUSART>
     */
 //-------------------------
 
 
 //-zero magnometer---------
     I2C_Init();
- 510:	0e 94 95 00 	call	0x12a	; 0x12a <I2C_Init>
-	I2C_Start(0x3C);	/* Start and write SLA+W */
- 514:	8c e3       	ldi	r24, 0x3C	; 60
- 516:	0e 94 9b 00 	call	0x136	; 0x136 <I2C_Start>
-	I2C_Write(0x00);	/* Write memory location address */
- 51a:	80 e0       	ldi	r24, 0x00	; 0
- 51c:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
-	I2C_Write(0x70);	/* Configure register A as 8-average, 15 Hz default, normal measurement */
- 520:	80 e7       	ldi	r24, 0x70	; 112
- 522:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
-	I2C_Write(0xA0);	/* Configure register B for gain */
- 526:	80 ea       	ldi	r24, 0xA0	; 160
- 528:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
-	I2C_Write(0x00);	/* Configure continuous measurement mode in mode register */
- 52c:	80 e0       	ldi	r24, 0x00	; 0
- 52e:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
-	I2C_Stop();		    /* Stop I2C */
- 532:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <I2C_Stop>
+ 59c:	0e 94 95 00 	call	0x12a	; 0x12a <I2C_Init>
+    I2C_Start(0x3C);	/* Start and write SLA+W */
+ 5a0:	8c e3       	ldi	r24, 0x3C	; 60
+ 5a2:	0e 94 9b 00 	call	0x136	; 0x136 <I2C_Start>
+    I2C_Write(0x00);	/* Write memory location address */
+ 5a6:	80 e0       	ldi	r24, 0x00	; 0
+ 5a8:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
+    I2C_Write(0x70);	/* Configure register A as 8-average, 15 Hz default, normal measurement */
+ 5ac:	80 e7       	ldi	r24, 0x70	; 112
+ 5ae:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
+    I2C_Write(0xA0);	/* Configure register B for gain */
+ 5b2:	80 ea       	ldi	r24, 0xA0	; 160
+ 5b4:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
+    I2C_Write(0x00);	/* Configure continuous measurement mode in mode register */
+ 5b8:	80 e0       	ldi	r24, 0x00	; 0
+ 5ba:	0e 94 2e 01 	call	0x25c	; 0x25c <I2C_Write>
+    I2C_Stop();		    /* Stop I2C */
+ 5be:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <I2C_Stop>
     north_angle = MagnometerRead();
- 536:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <MagnometerRead>
- 53a:	90 93 3d 02 	sts	0x023D, r25
- 53e:	80 93 3c 02 	sts	0x023C, r24
-    printString(" working");
- 542:	82 e3       	ldi	r24, 0x32	; 50
- 544:	92 e0       	ldi	r25, 0x02	; 2
- 546:	0e 94 cd 02 	call	0x59a	; 0x59a <printString>
+ 5c2:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <MagnometerRead>
+ 5c6:	90 93 67 02 	sts	0x0267, r25
+ 5ca:	80 93 66 02 	sts	0x0266, r24
 //-------------------------
 
 //-Enable sei--------------
     sei();
- 54a:	78 94       	sei
+ 5ce:	78 94       	sei
 //-------------------------
-    printString(" working");
- 54c:	82 e3       	ldi	r24, 0x32	; 50
- 54e:	92 e0       	ldi	r25, 0x02	; 2
- 550:	0e 94 cd 02 	call	0x59a	; 0x59a <printString>
- 554:	ff cf       	rjmp	.-2      	; 0x554 <main+0x7a>
+//-End of setup-----------------------------------------]
+    printString("RDY");
+ 5d0:	82 e6       	ldi	r24, 0x62	; 98
+ 5d2:	92 e0       	ldi	r25, 0x02	; 2
+ 5d4:	0e 94 12 03 	call	0x624	; 0x624 <printString>
+    printByte('\n');
+ 5d8:	8a e0       	ldi	r24, 0x0A	; 10
+ 5da:	0e 94 53 03 	call	0x6a6	; 0x6a6 <printByte>
+ 5de:	ff cf       	rjmp	.-2      	; 0x5de <main+0x70>
 
-00000556 <initUSART>:
+000005e0 <initUSART>:
 #include <avr/io.h>
 #include "USART.h"
 #include <util/setbaud.h>
 
 void initUSART(void) {                                /* requires BAUD */
   UBRR0H = UBRRH_VALUE;                        /* defined in setbaud.h */
- 556:	10 92 c5 00 	sts	0x00C5, r1
+ 5e0:	10 92 c5 00 	sts	0x00C5, r1
   UBRR0L = UBRRL_VALUE;
- 55a:	87 e6       	ldi	r24, 0x67	; 103
- 55c:	80 93 c4 00 	sts	0x00C4, r24
+ 5e4:	87 e6       	ldi	r24, 0x67	; 103
+ 5e6:	80 93 c4 00 	sts	0x00C4, r24
 #if USE_2X
   UCSR0A |= (1 << U2X0);
 #else
   UCSR0A &= ~(1 << U2X0);
- 560:	e0 ec       	ldi	r30, 0xC0	; 192
- 562:	f0 e0       	ldi	r31, 0x00	; 0
- 564:	80 81       	ld	r24, Z
- 566:	8d 7f       	andi	r24, 0xFD	; 253
- 568:	80 83       	st	Z, r24
+ 5ea:	e0 ec       	ldi	r30, 0xC0	; 192
+ 5ec:	f0 e0       	ldi	r31, 0x00	; 0
+ 5ee:	80 81       	ld	r24, Z
+ 5f0:	8d 7f       	andi	r24, 0xFD	; 253
+ 5f2:	80 83       	st	Z, r24
 #endif
                                   /* Enable USART transmitter/receiver */
   UCSR0B = (1 << TXEN0) | (1 << RXEN0);
- 56a:	88 e1       	ldi	r24, 0x18	; 24
- 56c:	80 93 c1 00 	sts	0x00C1, r24
+ 5f4:	88 e1       	ldi	r24, 0x18	; 24
+ 5f6:	80 93 c1 00 	sts	0x00C1, r24
   UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);   /* 8 data bits, 1 stop bit */
- 570:	86 e0       	ldi	r24, 0x06	; 6
- 572:	80 93 c2 00 	sts	0x00C2, r24
+ 5fa:	86 e0       	ldi	r24, 0x06	; 6
+ 5fc:	80 93 c2 00 	sts	0x00C2, r24
 }
- 576:	08 95       	ret
+ 600:	08 95       	ret
 
-00000578 <transmitByte>:
+00000602 <transmitByte>:
 
 
 void transmitByte(uint8_t data) {
- 578:	98 2f       	mov	r25, r24
+ 602:	98 2f       	mov	r25, r24
                                      /* Wait for empty transmit buffer */
   loop_until_bit_is_set(UCSR0A, UDRE0);
- 57a:	e0 ec       	ldi	r30, 0xC0	; 192
- 57c:	f0 e0       	ldi	r31, 0x00	; 0
- 57e:	80 81       	ld	r24, Z
- 580:	85 ff       	sbrs	r24, 5
- 582:	fd cf       	rjmp	.-6      	; 0x57e <transmitByte+0x6>
+ 604:	e0 ec       	ldi	r30, 0xC0	; 192
+ 606:	f0 e0       	ldi	r31, 0x00	; 0
+ 608:	80 81       	ld	r24, Z
+ 60a:	85 ff       	sbrs	r24, 5
+ 60c:	fd cf       	rjmp	.-6      	; 0x608 <transmitByte+0x6>
   UDR0 = data;                                            /* send data */
- 584:	90 93 c6 00 	sts	0x00C6, r25
+ 60e:	90 93 c6 00 	sts	0x00C6, r25
 }
- 588:	08 95       	ret
+ 612:	08 95       	ret
 
-0000058a <receiveByte>:
+00000614 <receiveByte>:
 
 uint8_t receiveByte(void) {
   loop_until_bit_is_set(UCSR0A, RXC0);       /* Wait for incoming data */
- 58a:	e0 ec       	ldi	r30, 0xC0	; 192
- 58c:	f0 e0       	ldi	r31, 0x00	; 0
- 58e:	80 81       	ld	r24, Z
- 590:	88 23       	and	r24, r24
- 592:	ec f7       	brge	.-6      	; 0x58e <receiveByte+0x4>
+ 614:	e0 ec       	ldi	r30, 0xC0	; 192
+ 616:	f0 e0       	ldi	r31, 0x00	; 0
+ 618:	80 81       	ld	r24, Z
+ 61a:	88 23       	and	r24, r24
+ 61c:	ec f7       	brge	.-6      	; 0x618 <receiveByte+0x4>
   return UDR0;                                /* return register value */
- 594:	80 91 c6 00 	lds	r24, 0x00C6
+ 61e:	80 91 c6 00 	lds	r24, 0x00C6
 }
- 598:	08 95       	ret
+ 622:	08 95       	ret
 
-0000059a <printString>:
+00000624 <printString>:
 
 
                        /* Here are a bunch of useful printing commands */
 
 void printString(const char myString[]) {
- 59a:	1f 93       	push	r17
- 59c:	cf 93       	push	r28
- 59e:	df 93       	push	r29
- 5a0:	ec 01       	movw	r28, r24
+ 624:	1f 93       	push	r17
+ 626:	cf 93       	push	r28
+ 628:	df 93       	push	r29
+ 62a:	ec 01       	movw	r28, r24
   uint8_t i = 0;
   while (myString[i]) {
- 5a2:	88 81       	ld	r24, Y
- 5a4:	88 23       	and	r24, r24
- 5a6:	51 f0       	breq	.+20     	; 0x5bc <printString+0x22>
- 5a8:	10 e0       	ldi	r17, 0x00	; 0
+ 62c:	88 81       	ld	r24, Y
+ 62e:	88 23       	and	r24, r24
+ 630:	51 f0       	breq	.+20     	; 0x646 <printString+0x22>
+ 632:	10 e0       	ldi	r17, 0x00	; 0
     transmitByte(myString[i]);
- 5aa:	0e 94 bc 02 	call	0x578	; 0x578 <transmitByte>
+ 634:	0e 94 01 03 	call	0x602	; 0x602 <transmitByte>
     i++;
- 5ae:	1f 5f       	subi	r17, 0xFF	; 255
+ 638:	1f 5f       	subi	r17, 0xFF	; 255
 
                        /* Here are a bunch of useful printing commands */
 
 void printString(const char myString[]) {
   uint8_t i = 0;
   while (myString[i]) {
- 5b0:	fe 01       	movw	r30, r28
- 5b2:	e1 0f       	add	r30, r17
- 5b4:	f1 1d       	adc	r31, r1
- 5b6:	80 81       	ld	r24, Z
- 5b8:	88 23       	and	r24, r24
- 5ba:	b9 f7       	brne	.-18     	; 0x5aa <printString+0x10>
+ 63a:	fe 01       	movw	r30, r28
+ 63c:	e1 0f       	add	r30, r17
+ 63e:	f1 1d       	adc	r31, r1
+ 640:	80 81       	ld	r24, Z
+ 642:	88 23       	and	r24, r24
+ 644:	b9 f7       	brne	.-18     	; 0x634 <printString+0x10>
     transmitByte(myString[i]);
     i++;
   }
 }
- 5bc:	df 91       	pop	r29
- 5be:	cf 91       	pop	r28
- 5c0:	1f 91       	pop	r17
- 5c2:	08 95       	ret
+ 646:	df 91       	pop	r29
+ 648:	cf 91       	pop	r28
+ 64a:	1f 91       	pop	r17
+ 64c:	08 95       	ret
 
-000005c4 <readString>:
+0000064e <readString>:
 
 void readString(char myString[], uint8_t maxLength) {
- 5c4:	ef 92       	push	r14
- 5c6:	ff 92       	push	r15
- 5c8:	0f 93       	push	r16
- 5ca:	1f 93       	push	r17
- 5cc:	cf 93       	push	r28
- 5ce:	df 93       	push	r29
- 5d0:	7c 01       	movw	r14, r24
+ 64e:	ef 92       	push	r14
+ 650:	ff 92       	push	r15
+ 652:	0f 93       	push	r16
+ 654:	1f 93       	push	r17
+ 656:	cf 93       	push	r28
+ 658:	df 93       	push	r29
+ 65a:	7c 01       	movw	r14, r24
   char response;
   uint8_t i;
   i = 0;
   while (i < (maxLength - 1)) {                   /* prevent over-runs */
- 5d2:	70 e0       	ldi	r23, 0x00	; 0
- 5d4:	eb 01       	movw	r28, r22
- 5d6:	21 97       	sbiw	r28, 0x01	; 1
- 5d8:	1c 16       	cp	r1, r28
- 5da:	1d 06       	cpc	r1, r29
- 5dc:	14 f0       	brlt	.+4      	; 0x5e2 <readString+0x1e>
- 5de:	00 e0       	ldi	r16, 0x00	; 0
- 5e0:	12 c0       	rjmp	.+36     	; 0x606 <readString+0x42>
- 5e2:	00 e0       	ldi	r16, 0x00	; 0
+ 65c:	70 e0       	ldi	r23, 0x00	; 0
+ 65e:	eb 01       	movw	r28, r22
+ 660:	21 97       	sbiw	r28, 0x01	; 1
+ 662:	1c 16       	cp	r1, r28
+ 664:	1d 06       	cpc	r1, r29
+ 666:	14 f0       	brlt	.+4      	; 0x66c <readString+0x1e>
+ 668:	00 e0       	ldi	r16, 0x00	; 0
+ 66a:	12 c0       	rjmp	.+36     	; 0x690 <readString+0x42>
+ 66c:	00 e0       	ldi	r16, 0x00	; 0
     response = receiveByte();
- 5e4:	0e 94 c5 02 	call	0x58a	; 0x58a <receiveByte>
- 5e8:	18 2f       	mov	r17, r24
+ 66e:	0e 94 0a 03 	call	0x614	; 0x614 <receiveByte>
+ 672:	18 2f       	mov	r17, r24
     transmitByte(response);                                    /* echo */
- 5ea:	0e 94 bc 02 	call	0x578	; 0x578 <transmitByte>
+ 674:	0e 94 01 03 	call	0x602	; 0x602 <transmitByte>
     if (response == '\r') {                     /* enter marks the end */
- 5ee:	1d 30       	cpi	r17, 0x0D	; 13
- 5f0:	51 f0       	breq	.+20     	; 0x606 <readString+0x42>
+ 678:	1d 30       	cpi	r17, 0x0D	; 13
+ 67a:	51 f0       	breq	.+20     	; 0x690 <readString+0x42>
       break;
     }
     else {
       myString[i] = response;                       /* add in a letter */
- 5f2:	f7 01       	movw	r30, r14
- 5f4:	e0 0f       	add	r30, r16
- 5f6:	f1 1d       	adc	r31, r1
- 5f8:	10 83       	st	Z, r17
+ 67c:	f7 01       	movw	r30, r14
+ 67e:	e0 0f       	add	r30, r16
+ 680:	f1 1d       	adc	r31, r1
+ 682:	10 83       	st	Z, r17
       i++;
- 5fa:	0f 5f       	subi	r16, 0xFF	; 255
+ 684:	0f 5f       	subi	r16, 0xFF	; 255
 
 void readString(char myString[], uint8_t maxLength) {
   char response;
   uint8_t i;
   i = 0;
   while (i < (maxLength - 1)) {                   /* prevent over-runs */
- 5fc:	80 2f       	mov	r24, r16
- 5fe:	90 e0       	ldi	r25, 0x00	; 0
- 600:	8c 17       	cp	r24, r28
- 602:	9d 07       	cpc	r25, r29
- 604:	7c f3       	brlt	.-34     	; 0x5e4 <readString+0x20>
+ 686:	80 2f       	mov	r24, r16
+ 688:	90 e0       	ldi	r25, 0x00	; 0
+ 68a:	8c 17       	cp	r24, r28
+ 68c:	9d 07       	cpc	r25, r29
+ 68e:	7c f3       	brlt	.-34     	; 0x66e <readString+0x20>
     else {
       myString[i] = response;                       /* add in a letter */
       i++;
     }
   }
   myString[i] = 0;                          /* terminal NULL character */
- 606:	f7 01       	movw	r30, r14
- 608:	e0 0f       	add	r30, r16
- 60a:	f1 1d       	adc	r31, r1
- 60c:	10 82       	st	Z, r1
+ 690:	f7 01       	movw	r30, r14
+ 692:	e0 0f       	add	r30, r16
+ 694:	f1 1d       	adc	r31, r1
+ 696:	10 82       	st	Z, r1
 }
- 60e:	df 91       	pop	r29
- 610:	cf 91       	pop	r28
- 612:	1f 91       	pop	r17
- 614:	0f 91       	pop	r16
- 616:	ff 90       	pop	r15
- 618:	ef 90       	pop	r14
- 61a:	08 95       	ret
+ 698:	df 91       	pop	r29
+ 69a:	cf 91       	pop	r28
+ 69c:	1f 91       	pop	r17
+ 69e:	0f 91       	pop	r16
+ 6a0:	ff 90       	pop	r15
+ 6a2:	ef 90       	pop	r14
+ 6a4:	08 95       	ret
 
-0000061c <printByte>:
+000006a6 <printByte>:
 
 void printByte(uint8_t byte) {
- 61c:	1f 93       	push	r17
- 61e:	18 2f       	mov	r17, r24
+ 6a6:	1f 93       	push	r17
+ 6a8:	18 2f       	mov	r17, r24
               /* Converts a byte to a string of decimal text, sends it */
   transmitByte('0' + (byte / 100));                        /* Hundreds */
- 620:	64 e6       	ldi	r22, 0x64	; 100
- 622:	0e 94 40 03 	call	0x680	; 0x680 <__udivmodqi4>
- 626:	80 5d       	subi	r24, 0xD0	; 208
- 628:	0e 94 bc 02 	call	0x578	; 0x578 <transmitByte>
+ 6aa:	64 e6       	ldi	r22, 0x64	; 100
+ 6ac:	0e 94 85 03 	call	0x70a	; 0x70a <__udivmodqi4>
+ 6b0:	80 5d       	subi	r24, 0xD0	; 208
+ 6b2:	0e 94 01 03 	call	0x602	; 0x602 <transmitByte>
   transmitByte('0' + ((byte / 10) % 10));                      /* Tens */
- 62c:	81 2f       	mov	r24, r17
- 62e:	6a e0       	ldi	r22, 0x0A	; 10
- 630:	0e 94 40 03 	call	0x680	; 0x680 <__udivmodqi4>
- 634:	0e 94 40 03 	call	0x680	; 0x680 <__udivmodqi4>
- 638:	89 2f       	mov	r24, r25
- 63a:	80 5d       	subi	r24, 0xD0	; 208
- 63c:	0e 94 bc 02 	call	0x578	; 0x578 <transmitByte>
+ 6b6:	81 2f       	mov	r24, r17
+ 6b8:	6a e0       	ldi	r22, 0x0A	; 10
+ 6ba:	0e 94 85 03 	call	0x70a	; 0x70a <__udivmodqi4>
+ 6be:	0e 94 85 03 	call	0x70a	; 0x70a <__udivmodqi4>
+ 6c2:	89 2f       	mov	r24, r25
+ 6c4:	80 5d       	subi	r24, 0xD0	; 208
+ 6c6:	0e 94 01 03 	call	0x602	; 0x602 <transmitByte>
   transmitByte('0' + (byte % 10));                             /* Ones */
- 640:	81 2f       	mov	r24, r17
- 642:	6a e0       	ldi	r22, 0x0A	; 10
- 644:	0e 94 40 03 	call	0x680	; 0x680 <__udivmodqi4>
- 648:	89 2f       	mov	r24, r25
- 64a:	80 5d       	subi	r24, 0xD0	; 208
- 64c:	0e 94 bc 02 	call	0x578	; 0x578 <transmitByte>
+ 6ca:	81 2f       	mov	r24, r17
+ 6cc:	6a e0       	ldi	r22, 0x0A	; 10
+ 6ce:	0e 94 85 03 	call	0x70a	; 0x70a <__udivmodqi4>
+ 6d2:	89 2f       	mov	r24, r25
+ 6d4:	80 5d       	subi	r24, 0xD0	; 208
+ 6d6:	0e 94 01 03 	call	0x602	; 0x602 <transmitByte>
 }
- 650:	1f 91       	pop	r17
- 652:	08 95       	ret
+ 6da:	1f 91       	pop	r17
+ 6dc:	08 95       	ret
 
-00000654 <nibbleToHexCharacter>:
+000006de <nibbleToHexCharacter>:
   transmitByte(nibbleToHexCharacter(nibble));
 }
 
 char nibbleToHexCharacter(uint8_t nibble) {
                                    /* Converts 4 bits into hexadecimal */
   if (nibble < 10) {
- 654:	8a 30       	cpi	r24, 0x0A	; 10
- 656:	10 f4       	brcc	.+4      	; 0x65c <nibbleToHexCharacter+0x8>
+ 6de:	8a 30       	cpi	r24, 0x0A	; 10
+ 6e0:	10 f4       	brcc	.+4      	; 0x6e6 <nibbleToHexCharacter+0x8>
     return ('0' + nibble);
- 658:	80 5d       	subi	r24, 0xD0	; 208
- 65a:	08 95       	ret
+ 6e2:	80 5d       	subi	r24, 0xD0	; 208
+ 6e4:	08 95       	ret
   }
   else {
     return ('A' + nibble - 10);
- 65c:	89 5c       	subi	r24, 0xC9	; 201
+ 6e6:	89 5c       	subi	r24, 0xC9	; 201
   }
 }
- 65e:	08 95       	ret
+ 6e8:	08 95       	ret
 
-00000660 <printHexByte>:
+000006ea <printHexByte>:
   transmitByte('0' + (byte / 100));                        /* Hundreds */
   transmitByte('0' + ((byte / 10) % 10));                      /* Tens */
   transmitByte('0' + (byte % 10));                             /* Ones */
 }
 
 void printHexByte(uint8_t byte) {
- 660:	1f 93       	push	r17
- 662:	18 2f       	mov	r17, r24
+ 6ea:	1f 93       	push	r17
+ 6ec:	18 2f       	mov	r17, r24
                         /* Prints a byte as its hexadecimal equivalent */
   uint8_t nibble;
   nibble = (byte & 0b11110000) >> 4;
   transmitByte(nibbleToHexCharacter(nibble));
- 664:	82 95       	swap	r24
- 666:	8f 70       	andi	r24, 0x0F	; 15
- 668:	0e 94 2a 03 	call	0x654	; 0x654 <nibbleToHexCharacter>
- 66c:	0e 94 bc 02 	call	0x578	; 0x578 <transmitByte>
+ 6ee:	82 95       	swap	r24
+ 6f0:	8f 70       	andi	r24, 0x0F	; 15
+ 6f2:	0e 94 6f 03 	call	0x6de	; 0x6de <nibbleToHexCharacter>
+ 6f6:	0e 94 01 03 	call	0x602	; 0x602 <transmitByte>
   nibble = byte & 0b00001111;
   transmitByte(nibbleToHexCharacter(nibble));
- 670:	81 2f       	mov	r24, r17
- 672:	8f 70       	andi	r24, 0x0F	; 15
- 674:	0e 94 2a 03 	call	0x654	; 0x654 <nibbleToHexCharacter>
- 678:	0e 94 bc 02 	call	0x578	; 0x578 <transmitByte>
+ 6fa:	81 2f       	mov	r24, r17
+ 6fc:	8f 70       	andi	r24, 0x0F	; 15
+ 6fe:	0e 94 6f 03 	call	0x6de	; 0x6de <nibbleToHexCharacter>
+ 702:	0e 94 01 03 	call	0x602	; 0x602 <transmitByte>
 }
- 67c:	1f 91       	pop	r17
- 67e:	08 95       	ret
+ 706:	1f 91       	pop	r17
+ 708:	08 95       	ret
 
-00000680 <__udivmodqi4>:
- 680:	99 1b       	sub	r25, r25
- 682:	79 e0       	ldi	r23, 0x09	; 9
- 684:	04 c0       	rjmp	.+8      	; 0x68e <__udivmodqi4_ep>
+0000070a <__udivmodqi4>:
+ 70a:	99 1b       	sub	r25, r25
+ 70c:	79 e0       	ldi	r23, 0x09	; 9
+ 70e:	04 c0       	rjmp	.+8      	; 0x718 <__udivmodqi4_ep>
 
-00000686 <__udivmodqi4_loop>:
- 686:	99 1f       	adc	r25, r25
- 688:	96 17       	cp	r25, r22
- 68a:	08 f0       	brcs	.+2      	; 0x68e <__udivmodqi4_ep>
- 68c:	96 1b       	sub	r25, r22
+00000710 <__udivmodqi4_loop>:
+ 710:	99 1f       	adc	r25, r25
+ 712:	96 17       	cp	r25, r22
+ 714:	08 f0       	brcs	.+2      	; 0x718 <__udivmodqi4_ep>
+ 716:	96 1b       	sub	r25, r22
 
-0000068e <__udivmodqi4_ep>:
- 68e:	88 1f       	adc	r24, r24
- 690:	7a 95       	dec	r23
- 692:	c9 f7       	brne	.-14     	; 0x686 <__udivmodqi4_loop>
- 694:	80 95       	com	r24
- 696:	08 95       	ret
+00000718 <__udivmodqi4_ep>:
+ 718:	88 1f       	adc	r24, r24
+ 71a:	7a 95       	dec	r23
+ 71c:	c9 f7       	brne	.-14     	; 0x710 <__udivmodqi4_loop>
+ 71e:	80 95       	com	r24
+ 720:	08 95       	ret
 
-00000698 <__divmodsi4>:
- 698:	97 fb       	bst	r25, 7
- 69a:	09 2e       	mov	r0, r25
- 69c:	05 26       	eor	r0, r21
- 69e:	0e d0       	rcall	.+28     	; 0x6bc <__divmodsi4_neg1>
- 6a0:	57 fd       	sbrc	r21, 7
- 6a2:	04 d0       	rcall	.+8      	; 0x6ac <__divmodsi4_neg2>
- 6a4:	14 d0       	rcall	.+40     	; 0x6ce <__udivmodsi4>
- 6a6:	0a d0       	rcall	.+20     	; 0x6bc <__divmodsi4_neg1>
- 6a8:	00 1c       	adc	r0, r0
- 6aa:	38 f4       	brcc	.+14     	; 0x6ba <__divmodsi4_exit>
+00000722 <__divmodhi4>:
+ 722:	97 fb       	bst	r25, 7
+ 724:	09 2e       	mov	r0, r25
+ 726:	07 26       	eor	r0, r23
+ 728:	0a d0       	rcall	.+20     	; 0x73e <__divmodhi4_neg1>
+ 72a:	77 fd       	sbrc	r23, 7
+ 72c:	04 d0       	rcall	.+8      	; 0x736 <__divmodhi4_neg2>
+ 72e:	0c d0       	rcall	.+24     	; 0x748 <__udivmodhi4>
+ 730:	06 d0       	rcall	.+12     	; 0x73e <__divmodhi4_neg1>
+ 732:	00 20       	and	r0, r0
+ 734:	1a f4       	brpl	.+6      	; 0x73c <__divmodhi4_exit>
 
-000006ac <__divmodsi4_neg2>:
- 6ac:	50 95       	com	r21
- 6ae:	40 95       	com	r20
- 6b0:	30 95       	com	r19
- 6b2:	21 95       	neg	r18
- 6b4:	3f 4f       	sbci	r19, 0xFF	; 255
- 6b6:	4f 4f       	sbci	r20, 0xFF	; 255
- 6b8:	5f 4f       	sbci	r21, 0xFF	; 255
+00000736 <__divmodhi4_neg2>:
+ 736:	70 95       	com	r23
+ 738:	61 95       	neg	r22
+ 73a:	7f 4f       	sbci	r23, 0xFF	; 255
 
-000006ba <__divmodsi4_exit>:
- 6ba:	08 95       	ret
+0000073c <__divmodhi4_exit>:
+ 73c:	08 95       	ret
 
-000006bc <__divmodsi4_neg1>:
- 6bc:	f6 f7       	brtc	.-4      	; 0x6ba <__divmodsi4_exit>
- 6be:	90 95       	com	r25
- 6c0:	80 95       	com	r24
- 6c2:	70 95       	com	r23
- 6c4:	61 95       	neg	r22
- 6c6:	7f 4f       	sbci	r23, 0xFF	; 255
- 6c8:	8f 4f       	sbci	r24, 0xFF	; 255
- 6ca:	9f 4f       	sbci	r25, 0xFF	; 255
- 6cc:	08 95       	ret
+0000073e <__divmodhi4_neg1>:
+ 73e:	f6 f7       	brtc	.-4      	; 0x73c <__divmodhi4_exit>
+ 740:	90 95       	com	r25
+ 742:	81 95       	neg	r24
+ 744:	9f 4f       	sbci	r25, 0xFF	; 255
+ 746:	08 95       	ret
 
-000006ce <__udivmodsi4>:
- 6ce:	a1 e2       	ldi	r26, 0x21	; 33
- 6d0:	1a 2e       	mov	r1, r26
- 6d2:	aa 1b       	sub	r26, r26
- 6d4:	bb 1b       	sub	r27, r27
- 6d6:	fd 01       	movw	r30, r26
- 6d8:	0d c0       	rjmp	.+26     	; 0x6f4 <__udivmodsi4_ep>
+00000748 <__udivmodhi4>:
+ 748:	aa 1b       	sub	r26, r26
+ 74a:	bb 1b       	sub	r27, r27
+ 74c:	51 e1       	ldi	r21, 0x11	; 17
+ 74e:	07 c0       	rjmp	.+14     	; 0x75e <__udivmodhi4_ep>
 
-000006da <__udivmodsi4_loop>:
- 6da:	aa 1f       	adc	r26, r26
- 6dc:	bb 1f       	adc	r27, r27
- 6de:	ee 1f       	adc	r30, r30
- 6e0:	ff 1f       	adc	r31, r31
- 6e2:	a2 17       	cp	r26, r18
- 6e4:	b3 07       	cpc	r27, r19
- 6e6:	e4 07       	cpc	r30, r20
- 6e8:	f5 07       	cpc	r31, r21
- 6ea:	20 f0       	brcs	.+8      	; 0x6f4 <__udivmodsi4_ep>
- 6ec:	a2 1b       	sub	r26, r18
- 6ee:	b3 0b       	sbc	r27, r19
- 6f0:	e4 0b       	sbc	r30, r20
- 6f2:	f5 0b       	sbc	r31, r21
+00000750 <__udivmodhi4_loop>:
+ 750:	aa 1f       	adc	r26, r26
+ 752:	bb 1f       	adc	r27, r27
+ 754:	a6 17       	cp	r26, r22
+ 756:	b7 07       	cpc	r27, r23
+ 758:	10 f0       	brcs	.+4      	; 0x75e <__udivmodhi4_ep>
+ 75a:	a6 1b       	sub	r26, r22
+ 75c:	b7 0b       	sbc	r27, r23
 
-000006f4 <__udivmodsi4_ep>:
- 6f4:	66 1f       	adc	r22, r22
- 6f6:	77 1f       	adc	r23, r23
- 6f8:	88 1f       	adc	r24, r24
- 6fa:	99 1f       	adc	r25, r25
- 6fc:	1a 94       	dec	r1
- 6fe:	69 f7       	brne	.-38     	; 0x6da <__udivmodsi4_loop>
- 700:	60 95       	com	r22
- 702:	70 95       	com	r23
- 704:	80 95       	com	r24
- 706:	90 95       	com	r25
- 708:	9b 01       	movw	r18, r22
- 70a:	ac 01       	movw	r20, r24
- 70c:	bd 01       	movw	r22, r26
- 70e:	cf 01       	movw	r24, r30
- 710:	08 95       	ret
+0000075e <__udivmodhi4_ep>:
+ 75e:	88 1f       	adc	r24, r24
+ 760:	99 1f       	adc	r25, r25
+ 762:	5a 95       	dec	r21
+ 764:	a9 f7       	brne	.-22     	; 0x750 <__udivmodhi4_loop>
+ 766:	80 95       	com	r24
+ 768:	90 95       	com	r25
+ 76a:	bc 01       	movw	r22, r24
+ 76c:	cd 01       	movw	r24, r26
+ 76e:	08 95       	ret
 
-00000712 <_exit>:
- 712:	f8 94       	cli
+00000770 <_exit>:
+ 770:	f8 94       	cli
 
-00000714 <__stop_program>:
- 714:	ff cf       	rjmp	.-2      	; 0x714 <__stop_program>
+00000772 <__stop_program>:
+ 772:	ff cf       	rjmp	.-2      	; 0x772 <__stop_program>
