@@ -1,7 +1,9 @@
 /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\
 [---------------------------------------]
 | 	    SHERIDA LIGTVOET            |
-|        	20076061       		|
+|        	20076061                |
+| Goede manier om samen te werken aan   |
+|         code, wel even wennen.       	|
 [---------------------------------------]
 \~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
@@ -9,6 +11,9 @@
 [---------------------------------------]
 |      	    KEVIN VAN GENT       	|
 |        	20000537        	|
+|Ik heb git niet heel veel gebruikt dit |
+|  project maar voor zo ver ik het heb  |
+|  gebruikt werkte het wel aardig goed  |
 [---------------------------------------]
 \~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/ 
 
@@ -27,15 +32,41 @@
 [---------------------------------------]
 |	  YANNICK VAN DEN AREND		|
 |		20070756		|
+|  Al heb ik momenteel nog niet veel 	|
+|  gewerkt met GIT zie ik het nut ervan |
+|  wel in. 				|
+|  Ik denk dat het in de toekomst zeker |
+|  nog van pas gaat komen.		|
+[---------------------------------------]
+\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+
+
+/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\
+[---------------------------------------]
+|	      Mika Duineveld		|
+|		19137435		|
+| Git helpt erg met met het efficienter	| 
+|  werken met meerdere mensenaan het 	|
+|     programmeren, het is wel 		|
+|  lastig om in te beginnen te werken	|
+[---------------------------------------]
+\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+
+
+/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\
+[---------------------------------------]
+|	        Twan Kors		|
+|		20157924		|
+|Ik heb GIT nog nooit gebruikt. Met meer|
+|oefening zou ik het kunnen gebruiken.	|
 [---------------------------------------]
 \~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
 
 
 
-
-
 dit is de eerste commit
+https://github.com/michaelvanweelde/Projectgroep_AGV_B1-G/blob/master/Bewijs%20materiaal%20gebruik%20GIT.txt
 
 
 
