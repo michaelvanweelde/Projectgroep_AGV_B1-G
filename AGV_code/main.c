@@ -183,15 +183,15 @@ int IRDistanceRead(int sensor)
     // Switch the ADC to the correct pin-----------------------
     switch (sensor)
     {
-    case 0:                                                     // Set pin 0 as read pin
+    case 0:                                                     // Set pin A0 as read pin
         ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    // PIN selection
         break;
 
-    case 1:                                                     // Set pin 2 as read pin
+    case 1:                                                     // Set pin A2 as read pin
         ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  // PIN selection
         break;
 
-    case 2:                                                     // Set pin 4 as read pin
+    case 2:                                                     // Set pin A4 as read pin
         ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1));  // PIN selection
         break;
     }
@@ -199,9 +199,8 @@ int IRDistanceRead(int sensor)
 
 
     // Take measurements with the ADC and collect the average--
-    for(X=1; X<5; X++)
+    for(X=0; X<5; X++)
     {
-
         ADCSRA |= (1 << ADSC);                                              // Start the conversion
         while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
         distance += (ADCH);                                                 // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
@@ -215,13 +214,14 @@ int IRDistanceRead(int sensor)
         printString("warning ADC out of boundaries retrying");
         printByte('\n');
         distance=0;
-        for(X=1; X<5; X++)
+        for(X=0; X<5; X++)
         {
             ADCSRA |= (1 << ADSC);                                          // Start the conversion
             while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout) );  // Wait until conversion is finished
             distance += (ADCH);                                             // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
         }
-        if( timeout == ADC_Tout){                                           // if retry has failed return 0
+        if( timeout == ADC_Tout)                                            // if retry has failed return 0
+        {
             printString("Retry failed");
             printByte('\n');
             return 0;
@@ -248,7 +248,7 @@ int ColorSensorRead(int sensor)
     //---------------------------------------------------------
 
 
-    for(X=1; X<10; X++)
+    for(X=0; X<10; X++)
     {
         //Create a timeout variable for error detection--------
         volatile int timeout=0;
@@ -267,7 +267,8 @@ int ColorSensorRead(int sensor)
 
 
         if( timeout == TCS_Tout )   // Catch a timeout scenario and end the function early returning a 0 to the program
-        {                           // Display error code with data and return 0 for error-
+        {
+            // Display error code with data and return 0 for error-
             printString("warning TCS ");
             printByte(sensor);
             printString(" out of boundaries after: ");
