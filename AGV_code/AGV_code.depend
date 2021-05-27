@@ -1,0 +1,78 @@
+# depslib dependency file v1.0
+1620735268 source:d:\desktop\projectgroep_agv_b1-g\agv_code\fuse.c
+	<avr/io.h>
+
+1621423287 source:d:\git\projectgroep_agv_b1-g\agv_code\fuse.c
+	<avr/io.h>
+
+1620818910 source:d:\git\projectgroep_agv_b1-g\agv_code\avr-uart-master\uart.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	<util/atomic.h>
+	"uart.h"
+
+1620820102 d:\git\projectgroep_agv_b1-g\agv_code\avr-uart-master\uart.h
+	<stdint.h>
+	<avr/io.h>
+
+1621443039 source:d:\git\projectgroep_agv_b1-g\agv_code\main.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	"USART.h"
+	"I2C_Master_H_file.h"
+
+1621423287 source:d:\git\projectgroep_agv_b1-g\agv_code\usart.c
+	<avr/io.h>
+	"USART.h"
+	<util/setbaud.h>
+
+1621423287 d:\git\projectgroep_agv_b1-g\agv_code\usart.h
+
+1621338525 source:d:\desktop\projectgroep_agv_b1-g\agv_code\usart.c
+	<avr/io.h>
+	"USART.h"
+	<util/setbaud.h>
+
+1621338525 d:\desktop\projectgroep_agv_b1-g\agv_code\usart.h
+
+1563070326 source:d:\desktop\projectgroep_agv_b1-g\agv_code\twi_master.c
+	"twi_master.h"
+
+1621340369 d:\desktop\projectgroep_agv_b1-g\agv_code\twi_master.h
+	<avr/io.h>
+	<util/twi.h>
+	<stdbool.h>
+
+1621346676 source:d:\desktop\projectgroep_agv_b1-g\agv_code\main.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	"USART.h"
+	"I2C_Master_H_file.h"
+
+1621344334 source:d:\desktop\projectgroep_agv_b1-g\agv_code\uart.c
+	"uart.h"
+
+1621344334 d:\desktop\projectgroep_agv_b1-g\agv_code\uart.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<avr/io.h>
+
+1621345682 source:d:\desktop\projectgroep_agv_b1-g\agv_code\i2c_master_c_file.c
+	"I2C_Master_H_file.h"
+
+1621346682 d:\desktop\projectgroep_agv_b1-g\agv_code\i2c_master_h_file.h
+	<avr/io.h>
+	<util/delay.h>
+	<math.h>
+
+1621423530 source:d:\git\projectgroep_agv_b1-g\agv_code\i2c_master_c_file.c
+	"I2C_Master_H_file.h"
+
+1621423530 d:\git\projectgroep_agv_b1-g\agv_code\i2c_master_h_file.h
+	<avr/io.h>
+	<util/delay.h>
+	<math.h>
+
