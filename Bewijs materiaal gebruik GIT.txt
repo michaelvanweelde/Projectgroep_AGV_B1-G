@@ -16,6 +16,11 @@ dit is de eerste commit
 [---------------------------------------]
 |	  YANNICK VAN DEN AREND		|
 |		20070756		|
+|  Al heb ik momenteel nog niet veel 	|
+|  gewerkt met GIT zie ik het nut ervan |
+|  wel in. 				|
+|  Ik denk dat het in de toekomst zeker |
+|  nog van pas gaat komen.		|
 [---------------------------------------]
 \~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
