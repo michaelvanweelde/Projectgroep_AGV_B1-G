@@ -4,16 +4,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "USART.h"
-#include "I2C_Master_H_file.h"	/* Include I2C header file */
 
-#define clock_sla       0x11
-#define clock_seconds   0x0F
-#define Mag_adress      0x1E
-#define Mag_read        0x3C
-#define Mag_write       0x3D
-#define Mag_x           0x03
-
-
+//Used Macros
 #define MotorL_INIT DDRH |= (1<<PH3 | 1<<PH4)               // initialize the L motor on pins(D6)-(D7)
 #define MotorL_CW  PORTH  = (PORTH | (1<<PH3)) & ~(1<<PH4)  // Rotate the L motor clockwise
 #define MotorL_CCW PORTH  = (PORTH | (1<<PH4)) & ~(1<<PH3)  // Rotate the L motor counter clockwise
@@ -56,9 +48,16 @@
 #define Key_switch      (PINL & (1<<PL5))  // Read key switch on pin(D44)
 #define Button          (PINL & (1<<PL3))  // Read main control button on pin(D46)
 
-
+//Settings and dial in variables
 #define TCS_Tout 2000 // what we consider an overdue measurement in clock cycles
 #define ADC_Tout 2000 // what we consider an overdue measurement in clock cycles
+
+#define AOP00 100   //Hall value of 0   degrees
+#define AOP18 100   //Hall value of 180 degrees
+#define AOP90 100   //Hall value of 90  degrees
+#define AOP27 100   //Hall value of 270 degrees
+
+#define testmode 1  //enable or disable disagnostic mode
 
 
 int north_angle = 0;
@@ -82,7 +81,6 @@ int main(void)
 //-Initialize pins---------
     TCS3200_INIT;
     LED_INIT;
-
 //-------------------------
 
 
@@ -94,17 +92,6 @@ int main(void)
 
 //-Initialize Serial-------
     initUSART();
-//-------------------------
-
-
-//-Initialize I2C interface
-    I2C_Init();
-    I2C_Start(0x3C);	/* Start and write SLA+W */
-    I2C_Write(0x00);	/* Write memory location address */
-    I2C_Write(0x70);	/* Configure register A as 8-average, 15 Hz default, normal measurement */
-    I2C_Write(0xA0);	/* Configure register B for gain */
-    I2C_Write(0x00);	/* Configure continuous measurement mode in mode register */
-    I2C_Stop();		    /* Stop I2C */
 //-------------------------
 
 
@@ -123,14 +110,34 @@ int main(void)
     while(1)
     {
 
-        //uint8_t x, y, z;
-        //I2C_Start(0x3C);	/* Start and wait for acknowledgment */
-        //I2C_Write(0x03);	/* Write memory location address */
-        //I2C_Repeated_Start(0x3D);/* Generate repeat start condition with SLA+R */
-        //x = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
-        //z = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Ack());
-        //y = (((int)I2C_Read_Ack()<<8) | (int)I2C_Read_Nack());
-        //I2C_Stop();		/* Stop I2C */
+    while(testmode == 1){
+    printByte('\n');
+    // IR sensor diagnostic printing
+    if (IR_FL > 0) printString("FL  "); else printString("    ");
+    if (IR_FR1 > 0)printString("FR1 "); else printString("    ");
+    if (IR_FR2 > 0)printString("FR2 "); else printString("    ");
+    if (IR_BL > 0) printString("BL  "); else printString("    ");
+    if (IR_BR > 0) printString("BR  "); else printString("    ");
+
+    // Magnometer Diagnostic printing
+    printString(" MAG=");
+    printByte(MagnometerRead());
+
+    // Distance sensor Diagnostic printing
+    printString(" IR0=");
+    printByte(IRDistanceRead(0));
+    printString(" IR1=");
+    printByte(IRDistanceRead(1));
+    printString(" IR2=");
+    printByte(IRDistanceRead(2));
+
+    //colorsensor diagnostic printing
+    printString(" CL0=");
+    printByte(ColorSensorRead(0));
+    printString(" CL1");
+    printByte(ColorSensorRead(1));
+    }
+
 
 
 
@@ -144,29 +151,36 @@ int main(void)
 
 int MagnometerRead()
 {
-    int Xvalue=0;
-    int Yvalue=0;
-    int Zvalue=0;
+    // Initialize variables------------------------------------
+    int hal1;
+    int hal2;
+    int angle;
+    volatile int timeout=0;
+    //---------------------------------------------------------
 
-    //-Read X value and write to mem
-    //----------------------------
 
-    //-Read Y value and write to mem
-    //----------------------------
+    // Switch the ADC to the correct pin and read data---------
+    ADMUX  = (ADMUX | (1<<MUX1)|(1<<MUX2)) & ~(1<<MUX0);                // PIN selection (A6)
+    ADCSRA |= (1 << ADSC);                                              // Start the conversion
+    while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
+    hal1 = (ADCH);                                                      // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+                                                                        // Because ADC value is an 8 bit value overflow is impossible
 
-    //-Read Z value and write to mem
-    //----------------------------
+    ADMUX  = (ADMUX | (1<<MUX0)|(1<<MUX1)|(1<<MUX2));                   // PIN selection (A7)
+    ADCSRA |= (1 << ADSC);                                              // Start the conversion
+    while ( (ADCSRA & (1 << ADSC)) == 1 && timeout++<(ADC_Tout/2) );    // Wait until conversion is finished
+    hal2 = (ADCH);                                                      // ADC data is left aligned and can be read from ADCH directly as an 8 bit value
+    //---------------------------------------------------------         // Because ADC value is an 8 bit value overflow is impossible
+
 
     //-compare the data-----------
-    /*
-    with trigonometry make sure that
-    the center point of all 3 sensors
-    is not close to the vehicle
-    this way magnets are ignored
-    */
+    if( (hal1 > hal2) && (hal1 >= AOP00) )angle = 0;
+    if( (hal1 > hal2) && (hal1 <  AOP18) )angle = 180;
+    if( (hal1 < hal2) && (hal2 >= AOP90) )angle = 90;
+    if( (hal1 < hal2) && (hal2 <  AOP27) )angle = 270;
     //----------------------------
 
-    return Xvalue;
+    return angle;
 }
 
 
