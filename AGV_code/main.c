@@ -4,6 +4,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "USART.h"
+#include <util/delay.h>
 
 //Used Macros
 #define MotorL_INIT DDRH |= (1<<PH3 | 1<<PH4)               // initialize the L motor on pins(D6)-(D7)
@@ -105,13 +106,11 @@ int main(void)
 //-------------------------
 //-End of setup-----------------------------------------]
     printString("RDY");
-    printByte('\n');
+    transmitByte('\n');
 
-    while(1)
-    {
 
     while(testmode == 1){
-    printByte('\n');
+    transmitByte('\n');
     // IR sensor diagnostic printing
     if (IR_FL > 0) printString("FL  "); else printString("    ");
     if (IR_FR1 > 0)printString("FR1 "); else printString("    ");
@@ -133,10 +132,15 @@ int main(void)
 
     //colorsensor diagnostic printing
     printString(" CL0=");
-    printByte(ColorSensorRead(0));
-    printString(" CL1");
-    printByte(ColorSensorRead(1));
+    //printByte(ColorSensorRead(0));
+    printString(" CL1=");
+    //printByte(ColorSensorRead(1));
+    transmitByte('\n');
     }
+
+    while(1)
+    {
+
 
 
 
@@ -193,24 +197,23 @@ int IRDistanceRead(int sensor)
     int X;
     //---------------------------------------------------------
 
-
+    ADMUX  = ((ADMUX) & 0b11100000);
     // Switch the ADC to the correct pin-----------------------
     switch (sensor)
     {
     case 0:                                                     // Set pin A0 as read pin
-        ADMUX  = (ADMUX) & ~((1<<MUX0)|(1<<MUX1)|(1<<MUX2));    // PIN selection
+        ADMUX  = (ADMUX | (0b00000000));    // PIN selection
         break;
 
     case 1:                                                     // Set pin A2 as read pin
-        ADMUX  = (ADMUX | (1<<MUX1)) & ~((1<<MUX0)|(1<<MUX2));  // PIN selection
+        ADMUX  = (ADMUX | (0b00000010));  // PIN selection
         break;
 
     case 2:                                                     // Set pin A4 as read pin
-        ADMUX  = (ADMUX | (1<<MUX2)) & ~((1<<MUX0)|(1<<MUX1));  // PIN selection
+        ADMUX  = (ADMUX | (0b00000100));  // PIN selection
         break;
     }
     //---------------------------------------------------------
-
 
     // Take measurements with the ADC and collect the average--
     for(X=0; X<5; X++)
@@ -226,7 +229,7 @@ int IRDistanceRead(int sensor)
     if( timeout == ADC_Tout/2 )
     {
         printString("warning ADC out of boundaries retrying");
-        printByte('\n');
+        transmitByte('\n');
         distance=0;
         for(X=0; X<5; X++)
         {
@@ -237,7 +240,7 @@ int IRDistanceRead(int sensor)
         if( timeout == ADC_Tout)                                            // if retry has failed return 0
         {
             printString("Retry failed");
-            printByte('\n');
+            transmitByte('\n');
             return 0;
         }
     }
@@ -288,7 +291,7 @@ int ColorSensorRead(int sensor)
             printString(" out of boundaries after: ");
             printByte(X);
             printString(" runs");
-            printByte('\n');
+            transmitByte('\n');
             return 0;
         }
         //-----------------------------------------------------
