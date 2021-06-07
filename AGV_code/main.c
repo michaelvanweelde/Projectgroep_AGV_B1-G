@@ -7,47 +7,45 @@
 #include <util/delay.h>
 
 //Used Macros
-#define MotorL_INIT DDRH |= (1<<PH3 | 1<<PH4)               // initialize the L motor on pins(D6)-(D7)
-#define MotorL_CW  PORTH  = (PORTH | (1<<PH3)) & ~(1<<PH4)  // Rotate the L motor clockwise
-#define MotorL_CCW PORTH  = (PORTH | (1<<PH4)) & ~(1<<PH3)  // Rotate the L motor counter clockwise
-#define MotorL_BRK PORTH &= ~(1<<PH3 | 1<<PH4)              // Stop the L motor
+#define MotorL_INIT DDRB |= (1<<PB0 | 1<<PB3)               // initialize the L motor on pins(D6)-(D7)
+#define MotorL_CW  PORTB  = (PORTB | (1<<PB0)) & ~(1<<PB3)  // Rotate the L motor clockwise
+#define MotorL_CCW PORTB  = (PORTB | (1<<PB3)) & ~(1<<PB0)  // Rotate the L motor counter clockwise
+#define MotorL_BRK PORTB &= ~(1<<PB0 | 1<<PB3)              // Stop the L motor
 
-#define MotorR_INIT DDRH |= (1<<PH5 | 1<<PH6)               // initialize the R motor on pins(D8)-(D9)
-#define MotorR_CW  PORTH  = (PORTH | (1<<PH5)) & ~(1<<PH6)  // Rotate the R motor clockwise
-#define MotorR_CCW PORTH  = (PORTH | (1<<PH6)) & ~(1<<PH5)  // Rotate the R motor counter clockwise
-#define MotorR_BRK PORTH &= ~(1<<PH5 | 1<<PH6)              // Stop the R motor
+#define MotorR_INIT DDRL |= (1<<PL4 | 1<<PL2 )               // initialize the R motor on pins(D8)-(D9)
+#define MotorR_CW  PORTL  = (PORTL | (1<<PL4)) & ~(1<<PL2)  // Rotate the R motor clockwise
+#define MotorR_CCW PORTL  = (PORTL | (1<<PL2)) & ~(1<<PL4)  // Rotate the R motor counter clockwise
+#define MotorR_BRK PORTL &= ~(1<<PL2 | 1<<PL4)              // Stop the R motor
 
-#define IR_FL   (PINL & (1<<PL6))  // Read Front Left    IR sensor on pin(D23)
-#define IR_FR1  (PINL & (1<<PL6))  // Read Front Right 1 IR sensor on pin(D24)
-#define IR_FR2  (PINL & (1<<PL6))  // Read Front Right 2 IR sensor on pin(D25)
-#define IR_BR   (PINL & (1<<PL6))  // Read Back  Right   IR sensor on pin(D26)
-#define IR_BL   (PINL & (1<<PL6))  // Read Back  Left    IR sensor on pin(D27)
+#define IR_FL   (PINC & (1<<PC5))  // Read Front Left    IR sensor on pin(D23)
+#define IR_FR1  (PINC & (1<<PC3))  // Read Front Right 1 IR sensor on pin(D24)
+#define IR_FR2  (PINC & (1<<PC1))  // Read Front Right 2 IR sensor on pin(D25)
+#define IR_BR   (PIND & (1<<PD7))  // Read Back  Right   IR sensor on pin(D26)
+#define IR_BL   (PING & (1<<PG1))  // Read Back  Left    IR sensor on pin(D27)
 
 #define Distance_FL IRDistanceRead(0) // Get value from Front Left  IR Distance sensor on pin(A0)
 #define Distance_FR IRDistanceRead(1) // Get value from Front Right IR Distance sensor on pin(A2)
 #define Distance_B  IRDistanceRead(2) // Get value from Back        IR Distance sensor on pin(A4)
 
-#define TCS3200_INIT    DDRB  |=  (1<<PB0 | 1<<PB1) // Initialize the TCS3200 Color sensor LEDS on pins(D52)-(D53)
-#define TCS3200_LED_ON  PORTB |=  (1<<PB0 | 1<<PB1) // Turn on  the LEDs on pins(D52)-(D53)
-#define TCS3200_LED_OFF PORTB &= ~(1<<PB0 | 1<<PB1) // Turn off the LEDs on pins(D52)-(D53)
-#define TCS3200G_L      (PINB & (1<<PB3))   // Read the Left  TCS3200 green pin on pin(D50)
-#define TCS3200G_R      (PINB & (1<<PB4))   // Read the Right TCS3200 green pin on pin(D51)
+#define TCS3200G_L      (PINL & (1<<PL5))   // Read the Left  TCS3200 green pin on pin(D50)
+#define TCS3200G_R      (PINL & (1<<PL3))   // Read the Right TCS3200 green pin on pin(D51)
 #define Color_L ColorSensorRead(0)  // Get value from L color sensor
 #define Color_R ColorSensorRead(1)  // Get value from R color sensor
 
-#define LED_INIT            DDRC  |=  (1<<PC1 | 1<<PC2 | 1<<PC5 | 1<<PC6 | 1<<PC7)   // initialize all LEDS
-#define Signal_LED_L_ON     PORTC |=  (1<<PC2)   // Turn on  the Left  Signal LED on pin(D35)
-#define Signal_LED_L_OFF    PORTC &= ~(1<<PC2)   // Turn off the Left  Signal LED on pin(D35)
-#define Signal_LED_R_ON     PORTC |=  (1<<PC1)   // Turn on  the Right Signal LED on pin(D36)
-#define Signal_LED_R_OFF    PORTC &= ~(1<<PC1)   // Turn off the Right Signal LED on pin(D36)
-#define Warning_RED         PORTC  = (PORTC | (1<<PC7)) & ~((1<<PC6)|(1<<PC5)) // Turn on only the red   RGB diode on pin(D30)
-#define Warning_Green       PORTC  = (PORTC | (1<<PC6)) & ~((1<<PC5)|(1<<PC7)) // Turn on only the green RGB diode on pin(D31)
-#define Warning_Blue        PORTC  = (PORTC | (1<<PC5)) & ~((1<<PC7)|(1<<PC6)) // Turn on only the blue  RGB diode on pin(D32)
-#define Warning_Off         PORTC &= ~(1<<PC7 | 1<<PC6 | PC5)                  // Turn off the RGB diodes
+#define LED_INIT1           DDRH  |=  (1<<PH5 | 1<<PH6)   // initialize all LEDS
+#define LED_INIT2           DDRB  |=  (1<<PB5 | 1<<PB6 | 1<<PB7)   // initialize all LEDS
+#define Signal_LED_L_ON     PORTH |=  (1<<PH5)   // Turn on  the Left  Signal LED on pin(D35)
+#define Signal_LED_L_OFF    PORTH &= ~(1<<PH5)   // Turn off the Left  Signal LED on pin(D35)
+#define Signal_LED_R_ON     PORTH |=  (1<<PH6)   // Turn on  the Right Signal LED on pin(D36)
+#define Signal_LED_R_OFF    PORTH &= ~(1<<PH6)   // Turn off the Right Signal LED on pin(D36)
+#define Warning_Red         PORTB  = (PORTB | (1<<PB5)) & ~((1<<PB6)|(1<<PB7)) // Turn on only the red   RGB diode on pin(D30)
+#define Warning_Green       PORTB  = (PORTB | (1<<PB6)) & ~((1<<PB5)|(1<<PB7)) // Turn on only the green RGB diode on pin(D31)
+#define Warning_Blue        PORTB  = (PORTB | (1<<PB7)) & ~((1<<PB5)|(1<<PB6)) // Turn on only the blue  RGB diode on pin(D32)
+#define Warning_Off         PORTB &= ~(1<<PB7 | 1<<PB6 | 1<<PB5)                  // Turn off the RGB diodes
 
-#define Emergency_Stop  (PINL & (1<<PL7))  // Read Emergency stop button on pin(D42)
-#define Key_switch      (PINL & (1<<PL5))  // Read key switch on pin(D44)
-#define Button          (PINL & (1<<PL3))  // Read main control button on pin(D46)
+#define Emergency_Stop  (PINA & (1<<PA6))  // Read Emergency stop button on pin(D42)
+#define Key_switch      (PINA & (1<<PA4))  // Read key switch on pin(D44)
+#define Button          (PINA & (1<<PA2))  // Read main control button on pin(D46)
 
 //Settings and dial in variables
 #define TCS_Tout 2000 // what we consider an overdue measurement in clock cycles
@@ -58,8 +56,8 @@
 #define AOP90 100   //Hall value of 90  degrees
 #define AOP27 100   //Hall value of 270 degrees
 
-#define testmode 1  //enable or disable disagnostic mode
-
+#define testmode 2  //1 = enable or disable disagnostic mode for sensors
+                    //2 = Eable or disable test mode for LEDS and motors
 
 int north_angle = 0;
 int MagnometerRead();
@@ -80,8 +78,8 @@ int main(void)
 //-------------------------
 
 //-Initialize pins---------
-    TCS3200_INIT;
-    LED_INIT;
+    LED_INIT1;
+    LED_INIT2;
 //-------------------------
 
 
@@ -118,6 +116,11 @@ int main(void)
     if (IR_BL > 0) printString("BL  "); else printString("    ");
     if (IR_BR > 0) printString("BR  "); else printString("    ");
 
+    // button diagnostic printing
+    if (Button > 0)         printString("BN "); else printString("   ");
+    if (Key_switch > 0)     printString("KS ");  else printString("   ");
+    if (Emergency_Stop > 0) printString("EM ");  else printString("   ");
+
     // Magnometer Diagnostic printing
     printString(" MAG=");
     printByte(MagnometerRead());
@@ -132,11 +135,30 @@ int main(void)
 
     //colorsensor diagnostic printing
     printString(" CL0=");
-    //printByte(ColorSensorRead(0));
+    printByte(ColorSensorRead(0));
     printString(" CL1=");
-    //printByte(ColorSensorRead(1));
+    printByte(ColorSensorRead(1));
     transmitByte('\n');
     }
+
+
+    while(testmode == 2){
+        for(int x=0; x <= 1000; x++){
+        if(x==0)  {Signal_LED_L_ON;  Signal_LED_R_ON;}
+        if(x==500){Signal_LED_L_OFF; Signal_LED_R_OFF;}
+
+        if(x==0)  Warning_Red;
+        if(x==250)Warning_Green;
+        if(x==500)Warning_Blue;
+        if(x==750)Warning_Off;
+
+        if(x==0)  {MotorL_CW; MotorR_CW;}
+        if(x==333){MotorL_BRK; MotorR_BRK;}
+        if(x==666){MotorL_CCW; MotorR_CCW;}
+        _delay_ms(2);
+        }
+    }
+
 
     while(1)
     {
