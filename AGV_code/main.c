@@ -5,6 +5,7 @@
 #include <avr/interrupt.h>
 #include "USART.h"
 #include <util/delay.h>
+#include <math.h>
 
 //Used Macros
 #define MotorL_INIT DDRB |= (1<<PB0 | 1<<PB3)               // initialize the L motor on pins(D6)-(D7)
@@ -51,12 +52,25 @@
 #define TCS_Tout 2000 // what we consider an overdue measurement in clock cycles
 #define ADC_Tout 2000 // what we consider an overdue measurement in clock cycles
 
+#define WaitTime 400    //how long we will wait after the button is released in ms
+#define worktime 400    //how long we wait at our work positions
+
 #define AOP00 100   //Hall value of 0   degrees
 #define AOP18 100   //Hall value of 180 degrees
 #define AOP90 100   //Hall value of 90  degrees
 #define AOP27 100   //Hall value of 270 degrees
 
-#define testmode 2  //1 = enable or disable disagnostic mode for sensors
+#define End_of_Travel   100 //IR value at end of track
+#define Start_of_travel 200 //IR value at start of track
+#define End_of_Zone     230 //IR value at end or work area
+#define Turn_1          140 //IR value of first work area
+#define Follow_Deadzone 10  //IR deadzone for following
+#define Follow_Distance 80  //IR distance to keep while following
+
+#define TCS_Aval    40 // Average TCS value for green
+#define TCS_Max_s   5  // Desired maximum deviation to consider a measurement valid
+
+#define testmode 1  //1 = enable or disable disagnostic mode for sensors
                     //2 = Eable or disable test mode for LEDS and motors
 
 int north_angle = 0;
@@ -102,6 +116,14 @@ int main(void)
 //-Enable interrupts-------
     sei();
 //-------------------------
+
+//-initialise variables----
+int state;
+int Lwork_done;
+int Rwork_done;
+int cycles;
+//-------------------------
+
 //-End of setup-----------------------------------------]
     printString("RDY");
     transmitByte('\n');
@@ -117,7 +139,7 @@ int main(void)
     if (IR_BR > 0) printString("BR  "); else printString("    ");
 
     // button diagnostic printing
-    if (Button > 0)         printString("BN "); else printString("   ");
+    if (Button > 0)         printString("BN ");  else printString("   ");
     if (Key_switch > 0)     printString("KS ");  else printString("   ");
     if (Emergency_Stop > 0) printString("EM ");  else printString("   ");
 
@@ -162,15 +184,159 @@ int main(void)
 
     while(1)
     {
+    if (state == 0)Warning_Off;
+
+    if(Button >= 1 && state == 0 && Key_switch== 0 ){
+    cycles=0;
+    Lwork_done=0 ;
+    Rwork_done=0 ;
+    state=1;
+    while(Button >= 1 && Emergency_Stop == 0);
+    _delay_ms(WaitTime);                             //Prevent contact bounce and allow for release of contact
+    }
+
+    if(Button >= 1 && state == 0 && Key_switch > 1 ){
+        cycles=0;
+        Lwork_done=0 ;
+        Rwork_done=0 ;
+        state=100;
+
+    }
+
+    if(Emergency_Stop >= 1){
+        state=0;
+        Warning_Red;
+        while(Emergency_Stop >= 1);
+        Warning_Off;
+    }
+
+    if(state > 0 && state < 100){
+        Warning_Green;
+        // center on line------------------------------------------------
+        if (state == 1){
+            if(IR_FR1 == 0 && IR_FR2 == 0 && IR_BR == 0){ MotorL_CW;  MotorR_BRK; }   // line invisible,                    |turn to line
+            if(IR_FR1  > 0 && IR_FR2  > 0 && IR_BR == 0){ MotorL_BRK; MotorR_CW;  }   // machine on line rear end swung     |turn to center
+            if(IR_FR1  > 0 && IR_FR2 == 0 && IR_BR == 0){ MotorL_CCW; MotorR_CW;  }   // machine turned sharply over line   |rotate to center
+            if(IR_FR1 == 0 && IR_FR2  > 0 && IR_BR == 0){ MotorL_CW;  MotorR_CW;  }   // machine rotated on corner          |rotate to center
+
+            if(IR_FR1 == 0 && IR_FR2 == 0 && IR_BR  > 0){ MotorL_CW;  MotorR_CCW; }   // machine diagonal left on line      |rotate to line
+            if(IR_FR1  > 0 && IR_FR2 == 0 && IR_BR  > 0){ MotorL_BRK;  MotorR_CW; }   // machine too far right              |rotate to center
+            if(IR_FR1 == 0 && IR_FR2  > 0 && IR_BR  > 0){ MotorL_CCW; MotorR_BRK; }   // machine too far left               |Rotate to center
+
+            if(IR_FR1  > 0 && IR_FR2  > 0 && IR_BR  > 0) state = 2;                   // machine aligned                    |commence farming
+        }
+        else if (state!= 1 && state < 5 ){
+            if(IR_FR1  > 0 && IR_FR2 == 0){ MotorL_BRK; MotorR_CW; _delay_ms(10); }   // machine leaning right    |turn to center   |use delays to filter movement stuttering
+            if(IR_FR1 == 0 && IR_FR2  > 0){ MotorL_CW; MotorR_BRK; _delay_ms(10); }   // machine leaning left     |rotate to line   |use delays to filter movement stuttering
+        }
+        //-----------------------------------------------------------------
+
+
+        // reverse to back of line-----------------------------------------
+        if (state == 2){
+            if(Distance_FL <  Start_of_travel || Distance_FR <  Start_of_travel){ MotorL_CCW; MotorR_CCW; }
+            if(Distance_FL >= Start_of_travel && Distance_FR >= Start_of_travel)state = 3;
+        }
+        //-----------------------------------------------------------------
+
+
+        // drive down line and look for Pots-------------------------------
+            if (state == 3)
+            {
+                MotorL_CW;
+                MotorR_CW;
+
+                // if the left color sensor detects a pot halt and send work signal.
+                if(ColorSensorRead(0) > (TCS_Aval - TCS_Max_s) && ColorSensorRead(0) < (TCS_Aval + TCS_Max_s) && (Lwork_done > 0))
+                {
+                    MotorL_BRK;
+                    MotorR_BRK;
+                    Signal_LED_L_ON;
+                    _delay_ms(WaitTime);
+                    Signal_LED_L_OFF;
+                    Lwork_done=1;
+                }
+                // if work has been completed and driving continues wait for the pot to be undetected again before checking again.
+                if(ColorSensorRead(0) == 0 )Lwork_done=0;
+                //-----------------------------------------------------------------
+
+
+                // if the right color sensor detects a pot halt and send work signal.
+                if(ColorSensorRead(1) > (TCS_Aval - TCS_Max_s) && ColorSensorRead(1) < (TCS_Aval + TCS_Max_s) && (Rwork_done > 0))
+                {
+                    MotorL_BRK;
+                    MotorR_BRK;
+                    Signal_LED_R_ON;
+                    _delay_ms(WaitTime);
+                    Signal_LED_R_OFF;
+                    Rwork_done=1;
+                }
+                // if work has been completed and driving continues wait for the pot to be undetected before checking again.
+                if(ColorSensorRead(1) == 0 )Rwork_done=0;
+                //-----------------------------------------------------------------
+                if(Distance_FL <  End_of_Travel && Distance_FR <  End_of_Travel)state=4;
+            }
 
 
 
+            // Reverse until out of the working zone
+            if(state == 4){
+                if(Distance_FL <  End_of_Zone || Distance_FR <  End_of_Zone){ MotorL_CCW; MotorR_CCW; }
+                if(Distance_FL >= End_of_Zone && Distance_FR >= End_of_Zone)state = 5;
+            }
+            //-----------------------------------------------------------------
+
+
+            // rotate 90 degrees CCw
+            if(state == 5){
+                if(IR_FR1  > 0 && IR_FR2  > 0 && IR_BR == 0){ MotorL_CCW;  MotorR_CCW; }    // machine on line rear end swung     |turn to center
+                if(IR_FR1 == 0 && IR_FR2  > 0 && IR_BR == 0){ MotorL_BRK;  MotorR_CCW; }    // machine on line rear end swung     |turn to center
+                if(IR_FR1  > 0 && IR_FR2 == 0 && IR_BR == 0){ MotorL_CCW;  MotorR_BRK; }    // line invisible,                    |turn to line
+                if(IR_FR1 == 0 && IR_FR2 == 0 && IR_BR == 0){ MotorL_BRK;  MotorR_CW ; }    // line invisible,                    |turn to line
+                if(IR_BR   > 0 )state = 6;                                                  //
+
+            }
+            //-----------------------------------------------------------------
+
+
+            // drive to next zone
+            if(state == 6)
+            {
+                MotorL_CCW;
+                MotorR_CCW;
+                if(IR_FR2  > 0){state = 1; cycles++;}   // machine on line rear end swung     |turn to center
+                //if(Distance_FL <  End_of_Zone || Distance_FR <  End_of_Zone){ MotorL_CCW; MotorR_CCW; }
+                //if(Distance_FL >= End_of_Zone && Distance_FR >= End_of_Zone)state = 7;
+            }
+            //-----------------------------------------------------------------
+            if (Key_switch > 1)break;
+        }
+
+
+
+            // if out of work stop
+            if(cycles == 2)state=0;
+            //--------------------
+
+
+            if(state => 100){
+            Warning_Blue;
+            if(IR_BL > 0 || IR_BR > 0 || IR_FL > 0 || IR_FR1 > 0 || IR_FR2 > 0 ){MotorL_BRK;  MotorR_BRK; Warning_Red }
+            else if (Distance_FL > Distance_FR + Follow_Deadzone){MotorL_CW;  MotorR_CCW;}
+            else if (Distance_FR > Distance_FL + Follow_Deadzone){MotorL_CCW;  MotorR_CW;}
+            else if (Distance_FL > Follow_Distance && Distance_FR > Follow_Distance ){MotorL_CW; MotorR_CW;}
+            else {MotorL_BRK; MotorR_BRK;}
+
+            (Key_switch == 0 )state=0;
+            }
 
 
 
     }
     return 0;
 }
+
+
 
 
 
@@ -319,9 +485,17 @@ int ColorSensorRead(int sensor)
         //-----------------------------------------------------
     }
 
+    //Calculate the standard deviation based on a desired value of TCS_Aval and reject if more than TCS_max_s
+    if(sqrt((width-TCS_Aval*X)^2 /(X-1))>TCS_Max_s && (testmode != 1)){
+    return 0;
+       }
+
+
+
     //Take the average value of the measurements rounding down--
     width = width / X;
     //---------------------------------------------------------
+
 
 
     return width; // Return value
